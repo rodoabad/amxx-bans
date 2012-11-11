@@ -902,10 +902,6 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 			";
 			
 				$security_fix = "
-			if (!get_magic_quotes_gpc()) { 
-			   \$_POST = addslashes(\$_POST); 
-			   \$_GET = addslashes(\$_GET); 
-			} 
 			// fix text to display 
 			\$_POST = str_replace(\"\'\", \"\", \$_POST); 
 			\$_POST = str_replace(\"\\\"\", \"\", \$_POST); 

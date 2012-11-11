@@ -129,10 +129,7 @@ if ( isset($_POST['action']) && $_POST['action'] == lang("_APPLY")) {
 ";
 
 	$security_fix = "
-if (!get_magic_quotes_gpc()) { 
-   \$_POST = addslashes(\$_POST); 
-   \$_GET = addslashes(\$_GET); 
-} 
+
 // fix text to display 
 \$_POST = str_replace(\"\'\", \"\", \$_POST); 
 \$_POST = str_replace(\"\\\"\", \"\", \$_POST); 

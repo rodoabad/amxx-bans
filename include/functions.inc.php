@@ -278,11 +278,7 @@ function CheckFrontEndState() {
 		} else {
 			header( "Location:$config->document_root/unavailable.php?msg=frontend_disabled" );
 		}
-	//} else if(file_exists("$config->path_root/admin/setup.php")) {
-	//	header( "Location:$config->document_root/unavailable.php?msg=setupfile_exists" );
-	} else if (!get_magic_quotes_gpc()) {
-		header( "Location:$config->document_root/unavailable.php?msg=magicquotes_off" );
-	}
+	} 
 }
 
 function GenerateString($strlen) {

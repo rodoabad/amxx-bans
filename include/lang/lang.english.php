@@ -203,7 +203,6 @@ define("_WHATISPRUNING","What is 'pruning'?");
 define("_UNAVAILABLE","Unavailable");
 define("_ERRORAMXBANSDISABLED","AMXBans front-end has been temporarily disabled by the administrator. Please check back soon.");
 define("_ERRORSETUPPHP","the file setup.php still exists. AMXBans will not function untill the file is removed.");
-define("_ERRORMAGICQUOTES","Magicquotes are set to 'OFF' in php.ini. AMXBans will not function unless magicquotes are set to 'ON'.");
 define("_DEFAULTLANG","Default web-site language");
 define("_MAINSWITCH", "Main Switch");
 ?>

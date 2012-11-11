@@ -43,8 +43,6 @@ if ($_GET['msg'] == "frontend_disabled") {
 	$message = lang("_ERRORAMXBANSDISABLED");
 } else if ($_GET['msg'] == "setupfile_exists") {
 	$message = lang("_ERRORSETUPPHP");
-} else if ($_GET['msg'] == "magicquotes_off") {
-	$message = lang("_ERRORMAGICQUOTES");
 }
 
 /*
