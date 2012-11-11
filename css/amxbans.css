@@ -1,0 +1,78 @@
+/* AMXBans Custom CSS */
+
+/* Containers */
+
+
+
+body {
+    background: transparent url('../img/subtle_dots.png') repeat;
+    margin: 20px auto;   
+}    
+
+/* Paddings */
+.pad20-v {
+	padding: 20px 0;
+}
+
+
+/* Blocks */
+
+.block-header {
+	border-bottom: 1px solid #eee;
+	margin: 18px 0;
+	padding-bottom: 17px;
+}
+
+.block-center {
+	margin: 0 auto;
+}
+
+.block6 {
+	width: 460px;
+}
+
+/* Forms */
+
+/* Content */
+.content-center {
+	text-align: center;
+}
+
+/* Modal */
+
+.modal-body {
+    max-height: 415px;
+}
+
+/* Tables */
+
+.table tbody td.success {
+    background-color: #DFF0D8;
+}
+
+.table tbody td.error {
+    background-color: #F2DEDE;
+}
+
+.table tbody td.info {
+    background-color: #D9EDF7;
+}
+
+.table {
+    background: white;
+}
+
+.ban-maps {
+    width: 300px;
+ height: 300px;   
+}
+
+#map-canvas {
+    height: 300px;
+}
+
+/* Ban Details */
+
+.ban-details h2 {
+    text-align: center;
+}
