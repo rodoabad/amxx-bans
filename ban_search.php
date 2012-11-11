@@ -28,15 +28,14 @@ if ($config->geoip == 'enabled') {
 }
 
 // Make the array for the admin list
-$query      = "SELECT DISTINCT username, nickname FROM $config->amxadmins ORDER BY nickname ASC";
-$resource   = mysql_query($query) or die(mysql_error());
+$query = "SELECT DISTINCT username, nickname FROM $config->amxadmins ORDER BY nickname ASC";
+$resource = mysql_query($query) or die(mysql_error());
 
-$admin_array    = array();
+$admin_array = array();
 
 while($result = mysql_fetch_object($resource)) {
-    $steamid    = $result->username;
-    $nickname   = htmlentities($result->nickname, ENT_QUOTES);
-
+	$steamid = $result->username;
+    $nickname = htmlentities($result->nickname, ENT_QUOTES);
 
 	// Asign variables to the array used in the template
 	$admin_info = array(
@@ -48,8 +47,8 @@ while($result = mysql_fetch_object($resource)) {
 }
 
 // Make the array for the server list
-$query2		= "SELECT DISTINCT address, hostname FROM $config->servers ORDER BY hostname ASC";
-$resource2	= mysql_query($query2) or die(mysql_error());
+$query2	= "SELECT DISTINCT address, hostname FROM $config->servers ORDER BY hostname ASC";
+$resource2 = mysql_query($query2) or die(mysql_error());
 	
 $server_array	= array();
 
@@ -87,16 +86,14 @@ while($result6 = mysql_fetch_object($resource6)) {
 }
 //
 
+// Make the array for the active bans list
 if ((isset($_GET['q']))) {
-	// Make the array for the active bans list
 	if ($_GET['type'] == 'playername') {
-		$resource3    = mysql_query("SELECT * FROM $config->bans WHERE player_nick LIKE '%".$_GET['q']."%' ORDER BY ban_created DESC") or die(mysql_error());
-	}
-	else if ($_GET['type'] == 'steamid') {
-		$resource3	= mysql_query("SELECT * FROM $config->bans WHERE player_id = '".$_GET['q']."' AND ban_type='S'  ORDER BY ban_created DESC") or die(mysql_error());
-	}
-    else if ($_GET['type'] == 'ipaddress') {
-        $resource3  = mysql_query("SELECT * FROM $config->bans WHERE player_ip LIKE '%".$_GET['q']."%' AND ban_type='S' ORDER BY ban_created DESC") or die(mysql_error());
+		$resource3 = mysql_query("SELECT * FROM $config->bans WHERE player_nick LIKE '%".$_GET['q']."%' ORDER BY ban_created DESC") or die(mysql_error());
+	} else if ($_GET['type'] == 'steamid') {
+		$resource3 = mysql_query("SELECT * FROM $config->bans WHERE player_id = '".$_GET['q']."' AND ban_type='S'  ORDER BY ban_created DESC") or die(mysql_error());
+	} else if ($_GET['type'] == 'ipaddress') {
+        $resource3 = mysql_query("SELECT * FROM $config->bans WHERE player_ip LIKE '%".$_GET['q']."%' AND ban_type='S' ORDER BY ban_created DESC") or die(mysql_error());
     }
 	else if (isset($_GET['reason'])) {
 		$resource3	= mysql_query("SELECT * FROM $config->bans WHERE ban_reason LIKE '%".$_GET['reason']."%' ORDER BY ban_created DESC") or die(mysql_error());
