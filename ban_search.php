@@ -28,34 +28,33 @@ if ($config->geoip == 'enabled') {
 }
 
 // Make the array for the admin list
-$query = "SELECT DISTINCT username, nickname FROM $config->amxadmins ORDER BY nickname ASC";
-$resource = mysql_query($query) or die(mysql_error());
+$admin_list = "SELECT DISTINCT username, nickname FROM `" .$config->amxadmins. "` ORDER BY nickname ASC";
+$get_admin_list = mysql_query($admin_list) or die(mysql_error());
 
 $admin_array = array();
 
-while($result = mysql_fetch_object($resource)) {
-	$steamid = $result->username;
-    $nickname = htmlentities($result->nickname, ENT_QUOTES);
+while($admin_object = mysql_fetch_object($get_admin_list)) {
+	$steamid = $admin_object->username;
+    $nickname = htmlentities($admin_object->nickname, ENT_QUOTES);
 
 	// Asign variables to the array used in the template
 	$admin_info = array(
 		"steamid"	=> $steamid,
 		"nickname"	=> $nickname
-		);
+	);
 	
 	$admin_array[] = $admin_info;
 }
 
 // Make the array for the server list
-$query2	= "SELECT DISTINCT address, hostname FROM $config->servers ORDER BY hostname ASC";
-$resource2 = mysql_query($query2) or die(mysql_error());
+$server_list = "SELECT DISTINCT address, hostname FROM `" .$config->servers. "` ORDER BY hostname ASC";
+$get_server_list = mysql_query($server_list) or die(mysql_error());
 	
 $server_array	= array();
 
-while($result2 = mysql_fetch_object($resource2)) {
-	$address	= $result2->address;
-	$hostname	= htmlentities($result2->hostname, ENT_QUOTES);
-
+while($server_object = mysql_fetch_object($get_server_list)) {
+	$address	= $server_object->address;
+	$hostname	= htmlentities($server_object->hostname, ENT_QUOTES);
 
 	// Asign variables to the array used in the template
 	$server_info = array(
@@ -66,16 +65,14 @@ while($result2 = mysql_fetch_object($resource2)) {
 	$server_array[] = $server_info;
 }
 
-// SquarePants
 // Make the array for the reason list
-
-$query6 = "SELECT DISTINCT reason FROM $config->reasons ORDER BY reason";
-$resource6  = mysql_query($query6) or die(mysql_error());
+$reason_list = "SELECT DISTINCT reason FROM `" .$config->reasons. "` ORDER BY reason";
+$get_reason_list = mysql_query($reason_list) or die(mysql_error());
 
 $reason_array   = array();
 
-while($result6 = mysql_fetch_object($resource6)) {
-    $reasons    = $result6->reason;
+while($reason_object = mysql_fetch_object($get_reason_list)) {
+    $reasons = $reason_object->reason;
 
     // Asign variables to the array used in the template
     $reason_info = array(
@@ -84,21 +81,18 @@ while($result6 = mysql_fetch_object($resource6)) {
 
     $reason_array[] = $reason_info;
 }
-//
 
 // Make the array for the active bans list
 if ((isset($_GET['q']))) {
 	if ($_GET['type'] == 'playername') {
 		$resource3 = mysql_query("SELECT * FROM $config->bans WHERE player_nick LIKE '%".$_GET['q']."%' ORDER BY ban_created DESC") or die(mysql_error());
 	} else if ($_GET['type'] == 'steamid') {
-		$resource3 = mysql_query("SELECT * FROM $config->bans WHERE player_id = '".$_GET['q']."' AND ban_type='S'  ORDER BY ban_created DESC") or die(mysql_error());
+		$resource3 = mysql_query("SELECT * FROM $config->bans WHERE player_id = '".$_GET['q']."' ORDER BY ban_created DESC") or die(mysql_error());
 	} else if ($_GET['type'] == 'ipaddress') {
-        $resource3 = mysql_query("SELECT * FROM $config->bans WHERE player_ip LIKE '%".$_GET['q']."%' AND ban_type='S' ORDER BY ban_created DESC") or die(mysql_error());
-    }
-	else if (isset($_GET['reason'])) {
-		$resource3	= mysql_query("SELECT * FROM $config->bans WHERE ban_reason LIKE '%".$_GET['reason']."%' ORDER BY ban_created DESC") or die(mysql_error());
-	}
-	else if (isset($_GET['date'])) {
+        $resource3 = mysql_query("SELECT * FROM $config->bans WHERE player_ip LIKE '%".$_GET['q']."%' ORDER BY ban_created DESC") or die(mysql_error());
+    } else if (isset($_GET['reason'])) {
+		$resource3 = mysql_query("SELECT * FROM $config->bans WHERE ban_reason LIKE '%".$_GET['reason']."%' ORDER BY ban_created DESC") or die(mysql_error());
+	} else if (isset($_GET['date'])) {
 		$date		= substr_replace($_GET['date'], '', 2, 1);
 		$date		= substr_replace($date, '', 4, 1);
 		$resource3	= mysql_query("SELECT * FROM $config->bans WHERE FROM_UNIXTIME(ban_created,'%d%m%Y') LIKE '$date' ORDER BY ban_created DESC") or die(mysql_error());
@@ -112,6 +106,10 @@ if ((isset($_GET['q']))) {
 	else  {
 		echo "KOE";
 	}
+	
+	echo $_GET['q'];
+	echo $resource3;
+
 	$ban_array	= array();
 	$timezone = $config->timezone_fix * 3600;
 	$bancount = 0;
@@ -197,7 +195,7 @@ if ((isset($_GET['q']))) {
 	$resource5	= mysql_query($query5) or die(mysql_error());
 	$exban_array	= array();
 	$ex_bancount = 0;
-
+	
 	while($result5 = mysql_fetch_object($resource5)) {
 		$bhid		= $result5->bhid;
 		$ex_date	= dateShorttime($result5->ban_created + $timezone);
@@ -279,25 +277,23 @@ $smarty->assign("servers",$server_array);
 $smarty->assign("bans", isset($ban_array) ? $ban_array : NULL);
 $smarty->assign("exbans", isset($exban_array) ? $exban_array : NULL);
 
-if ( isset($_GET['q']) )
-{
-	$smarty->assign("nick", get_post('q'));
+if (isset($_GET['q'])) {
+	$smarty->assign("nick", $_GET['q']);
 }
-if ( isset($_GET['steamid']) )
-{
-	$smarty->assign("steamid", get_post('steamid'));
+if (isset($_GET['steamid'])) {
+	$smarty->assign("steamid", $_GET['steamid']);
 }
-if ( isset($_GET['ip']) )
+if ( isset($_GET['ipaddress']) )
 {
-	$smarty->assign("ip", get_post('ip'));
+	$smarty->assign("ipaddress", $_GET['ipaddress']);
 }
 if ( isset($_GET['reason']) )
 {
-	$smarty->assign("reason", get_post('reason'));
+	$smarty->assign("reason", $_GET['reason']);
 }
 if ( isset($_GET['date']) )
 {
-	$smarty->assign("date", get_post('date'));
+	$smarty->assign("date", $_GET['date']);
 }
 if ( isset($_GET['timesbanned']) )
 {

@@ -84,7 +84,7 @@
 		
 		<table>
 		    <tr>
-	            <td></td>
+	            <td height='16' width='2%'  class='listtable_top'>&nbsp;</td>
 	            <td height='16' width='{if $display_reason == "enabled"}10%{else}15%{/if}' class='listtable_top'><b>{"_DATE"|lang}</b></td>
 	            <td height='16' width='{if $display_reason == "enabled"}23%{else}33%{/if}' class='listtable_top'><b>{"_PLAYER"|lang}</b></td>
 	            <td height='16' width='{if $display_reason == "enabled"}20%{else}30%{/if}' class='listtable_top'><b>{"_ADMIN"|lang}</b></td>
@@ -120,7 +120,7 @@
           </tr>
 
 {foreachelse}
-          <t>
+          <tr bgcolor="#D3D8DC">
             <td height='16' colspan='7' class='listtable_1'>No expired ban(s) found for that {if isset($steamid)}steamID{elseif isset($date)}date{elseif isset($admin)}admin{elseif isset($server)}server{/if}.</td>
           </tr>
 {/foreach}
