@@ -97,14 +97,11 @@ if ((isset($_GET['q']))) {
 		$date		= substr_replace($date, '', 4, 1);
 		$resource3	= mysql_query("SELECT * FROM `" .$config->bans. "` WHERE FROM_UNIXTIME(ban_created,'%d%m%Y') LIKE '$date' ORDER BY `ban_created` DESC") or die(mysql_error());
 	}
-	else if (isset($_GET['admin'])) {
-		$resource3	= mysql_query("SELECT * FROM `" .$config->bans. "` WHERE `admin_id` = '".$_GET['admin']."' ORDER BY `ban_created` DESC") or die(mysql_error());
+	else if ($_GET['type'] == 'admin') {
+		$resource3	= mysql_query('SELECT * FROM `' .$config->bans. '` WHERE `admin_id` = "' .$_GET['q']. '" ORDER BY `ban_created` DESC') or die(mysql_error());
 	}
-	else if (isset($_GET['server'])) {
-		$resource3	= mysql_query("SELECT * FROM `" .$config->bans. "` WHERE `server_ip` = '".$_GET['server']."' ORDER BY `ban_created` DESC") or die(mysql_error());
-	}
-	else  {
-		echo "KOE";
+	else if ($_GET['type'] == 'server') {
+		$resource3	= mysql_query('SELECT * FROM `' .$config->bans. '` WHERE `server_ip` LIKE "%' .$_GET['q']. '%" ORDER BY `ban_created` DESC') or die(mysql_error());
 	}
 	
 	$ban_array	= array();
