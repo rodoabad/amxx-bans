@@ -1,14 +1,10 @@
 {if $display_search != "enabled" && ($smarty.session.bans_add != "yes")}
-	<table cellspacing='0' border='0' width='100%'>
-		<tr>
-	    	<td height='100' align='center'><b><font color='red' size='3'>{"_NOACCESS"|lang}</font></b></td>
-	    </tr>
-	</table> 
+	{"_NOACCESS"|lang}
 {else}
-	<form class="form-horizontal" name="searchnick" method="get" action="{$this}">
+	<form class="form-horizontal" method="get" action="{$this}">
     	<div class="control-group">
         	<legend>Search</legend>
-            <input class="input-xlarge" type="text" name="q" value="{$nick}" placeholder="What are you looking for?">
+            <input class="input-xlarge" type="text" name="q" placeholder="What are you looking for?">
             <select name="type">
             	<option value="playername">Player Name</option>
                 <option value="steamid">Steam ID</option>
@@ -20,7 +16,6 @@
                 <option value="server">Server</option>                    
             </select>
             <button class="btn btn-primary" type="submit">{'_SEARCH'|lang}</button>
-            <span class="btn btn-info">Advanced Options</span>
         </div>
     </form>
 
@@ -38,7 +33,7 @@
             	{/if}
             	<th>{'_LENGTH'|lang}</th>
             	<th>Server</th>
-            	<th>Options</th>            
+            	<!-- <th>Options</th> -->            
 			</tr>
           	
           	{foreach from=$bans item=bans}
@@ -52,6 +47,7 @@
            			{/if}
             		<td>{$bans.duration}</td>
             		<td>{$bans.servername} ({$bans.gametype})</td>
+          			<!--
           			<td>
                 		<table>
             				<tr>
@@ -67,10 +63,11 @@
             				</tr>
         				</table>
             		</td>
+            		-->
           		</tr>
 			{/foreach}
 			<tr>
-				<td colspan="8">
+				<td colspan="7">
 					{if $bans.bancount}
 						{'_TOTALACTBANS'|lang}: {$bans.bancount}
 					{else}
