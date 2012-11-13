@@ -19,7 +19,7 @@
 		<link rel="stylesheet" type="text/css" href="{$dir}/css/amxbans.css" />
 		
 		<script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>	
-		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 		<script src="{$dir}/js/bootstrap.js"></script>
 		<script src="{$dir}/js/amxxbans.js"></script>
 			
