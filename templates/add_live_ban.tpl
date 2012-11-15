@@ -1,13 +1,13 @@
 
-        <table cellspacing='1' class='listtable' width='100%'>
+        <table>
           <tr>
-            <td height='16' colspan='4' class='listtable_top'><b>{"_SELECTSERVER"|lang}</b></td>
+            <td>{"_SELECTSERVER"|lang}</td>
           </tr>
           <tr bgcolor="#D3D8DC">
-          	<td height='16' width='2%' class='listtable_1'>&nbsp;</td>
-            <td height='16' width='50%' class='listtable_1'><b>{"_HOSTNAME"|lang}</b></td>
-            <td height='16' width='8%' class='listtable_1'><b>{"_PLAYERS"|lang}</b></td>
-            <td height='16' width='40%' class='listtable_1'><b>{"_ADDRESS"|lang}</b></td>
+          	<td>&nbsp;</td>
+            <td>{"_HOSTNAME"|lang}</td>
+            <td>{"_PLAYERS"|lang}</td>
+            <td>{"_ADDRESS"|lang}</td>
           </tr>
 
           {foreach from=$servers item=servers}
