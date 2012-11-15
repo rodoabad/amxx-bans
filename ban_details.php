@@ -21,14 +21,14 @@ require("$config->path_root/include/functions.inc.php");
 
 
 // Get ban details
-if((isset($_GET["bid"]) AND is_numeric($_GET["bid"])) OR (isset($_GET["bhid"]) AND is_numeric($_GET["bhid"]))) {
-	if(isset($_GET["bid"])) {
-		$query = "SELECT * FROM $config->bans WHERE bid = '".mysql_escape_string($_GET["bid"])."'";
+if((isset($_GET['bid']) && is_numeric($_GET['bid'])) || (isset($_GET['bhid']) && is_numeric($_GET['bhid']))) {
+	if(isset($_GET['bid'])) {
+		$get_ban_id = 'SELECT * FROM `' .$config->bans. '` WHERE `bid` = "' .mysql_escape_string($_GET['bid']). '"';
 	} else {
-		$query = "SELECT * FROM $config->ban_history WHERE bhid = '".mysql_escape_string($_GET["bhid"])."'";
+		$get_ban_id = 'SELECT * FROM `' .$config->ban_history. '` WHERE `bhid` = "' .mysql_escape_string($_GET['bhid']). '"';
 	}
 	
-	$resource = mysql_query($query) or die(mysql_error());	
+	$resource = mysql_query($get_ban_id) or die(mysql_error());	
 	$numrows = mysql_num_rows($resource);
 	
 	if(mysql_num_rows($resource) == 0) {

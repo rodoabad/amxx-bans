@@ -31,7 +31,7 @@
   <li>Home <span class="divider">/</span></li>
   <li>Bans <span class="divider">/</span></li>
   <li>{'_BANDETAILS'|lang} <span class="divider">/</span></li>
-  <li class="active"><a href="{$dir}/ban_details.php?bhid={$bhans.bhid}">{$ban_info.player_id}</a></li>
+  <li class="active"><a href="{$dir}/ban_details.php?bid={$ban_info.bid}">{$ban_info.player_id}</a></li>
 </ul>
 
     <div class="page-header">
