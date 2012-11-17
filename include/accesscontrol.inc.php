@@ -3,8 +3,7 @@
 function secure($str)
 {
 // Secure fix + hack logger (writes in sql access log)
-	if ($str != "")
-	{
+	if ($str != '') {
 		$str = eregi_replace("content-disposition:"," hacking attemptt ",$str);
 		$str = eregi_replace("content-type:"," hacking attempt ",$str);
 		$str = eregi_replace("content-transfer-encoding:"," hacking attempt ",$str);

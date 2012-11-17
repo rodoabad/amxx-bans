@@ -3,18 +3,18 @@
 // Start session
 session_start();
 
-require("include/config.inc.php");
+require('include/config.inc.php');
 
-if ($config->error_handler == "enabled") {
-	include("$config->error_handler_path");
+if ($config->error_handler == 'enabled') {
+	include('$config->error_handler_path');
 }
 
-include("$config->path_root/include/accesscontrol.inc.php");
+include($config->path_root. '/include/accesscontrol.inc.php');
 
-if(isset($_COOKIE["amxbans"])) {
+if(isset($_COOKIE['amxbans'])) {
 
-	$res = mysql_query("UPDATE $config->webadmins SET user_logcode = '' WHERE user_nick = '$uid'");
-	setcookie("amxbans", "clearing", time()-60*60*24*7, "$config->document_root/", $_SERVER["SERVER_NAME"]);
+	$res = mysql_query('UPDATE `' .$config->webadmins. '` SET `user_logcode` = "" WHERE `user_nick` = "' .$uid. '"');
+	setcookie('amxbans', 'clearing', time()-60*60*24*7, $config->document_root. '/', $_SERVER['SERVER_NAME']);
 }
 
 unset($_SESSION['uid']);

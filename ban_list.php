@@ -18,30 +18,30 @@ $next_button = NULL;
 session_start();
 
 // Require basic site files
-require("include/config.inc.php");
+require('include/config.inc.php');
 
-if ($config->error_handler == "enabled") {
+if ($config->error_handler == 'enabled') {
 	//include("$config->error_handler_path");
 }
 
-if ($config->geoip == "enabled") {
-	include("$config->path_root/include/geoip.inc");
-    include("$config->path_root/include/geoipcity.inc");
-    include("$config->path_root/include/geoipregionvars.php");
+if ($config->geoip == 'enabled') {
+	include($config->path_root. '/include/geoip.inc');
+    include($config->path_root. '/include/geoipcity.inc');
+    include($config->path_root. '/include/geoipregionvars.php');
 }
 
-require("$config->path_root/include/functions.lang.php");
-require("$config->path_root/include/functions.inc.php");
+require($config->path_root. '/include/functions.lang.php');
+require($config->path_root. '/include/functions.inc.php');
 
 // First we get the total number of bans in the database.
 
 
-$resource	= mysql_query("SELECT COUNT(bid) AS all_bans FROM $config->bans") or die(mysql_error());
+$resource	= mysql_query('SELECT COUNT(bid) AS `all_bans` FROM `' .$config->bans. '`') or die(mysql_error());
 $result		= mysql_fetch_object($resource);
 
 // Get the page number, if no number is defined make default 1
-if(isset($_GET["page"]) AND is_numeric($_GET["page"])) {
-	$page = $_GET["page"];
+if(isset($_GET['page']) AND is_numeric($_GET['page'])) {
+	$page = $_GET['page'];
 	
 	if($page < 1) {
 		trigger_error("Pagenumbers need to be >= 1.", E_USER_NOTICE);

@@ -28,7 +28,7 @@ if ($config->geoip == 'enabled') {
 }
 
 // Make the array for the admin list
-$admin_list = 'SELECT DISTINCT username, nickname FROM `' .$config->amxadmins. '` ORDER BY nickname ASC';
+$admin_list = 'SELECT DISTINCT `username`, `nickname` FROM `' .$config->amxadmins. '` ORDER BY `nickname` ASC';
 $get_admin_list = mysql_query($admin_list) or die(mysql_error());
 
 $admin_array = array();
@@ -47,7 +47,7 @@ while($admin_object = mysql_fetch_object($get_admin_list)) {
 }
 
 // Make the array for the server list
-$server_list = 'SELECT DISTINCT address, hostname FROM `' .$config->servers. '` ORDER BY hostname ASC';
+$server_list = 'SELECT DISTINCT `address`, `hostname` FROM `' .$config->servers. '` ORDER BY `hostname` ASC';
 $get_server_list = mysql_query($server_list) or die(mysql_error());
 	
 $server_array	= array();
@@ -66,7 +66,7 @@ while($server_object = mysql_fetch_object($get_server_list)) {
 }
 
 // Make the array for the reason list
-$reason_list = 'SELECT DISTINCT reason FROM `' .$config->reasons. '` ORDER BY reason';
+$reason_list = 'SELECT DISTINCT `reason` FROM `' .$config->reasons. '` ORDER BY `reason`';
 $get_reason_list = mysql_query($reason_list) or die(mysql_error());
 
 $reason_array   = array();
@@ -95,7 +95,7 @@ if ((isset($_GET['q']))) {
 	} else if (isset($_GET['date'])) {
 		$date		= substr_replace($_GET['date'], '', 2, 1);
 		$date		= substr_replace($date, '', 4, 1);
-		$resource3	= mysql_query("SELECT * FROM `" .$config->bans. "` WHERE FROM_UNIXTIME(ban_created,'%d%m%Y') LIKE '$date' ORDER BY `ban_created` DESC") or die(mysql_error());
+		$resource3	= mysql_query("SELECT * FROM `" .$config->bans. "` WHERE FROM_UNIXTIME(`ban_created`,'%d%m%Y') LIKE '$date' ORDER BY `ban_created` DESC") or die(mysql_error());
 	}
 	else if ($_GET['type'] == 'admin') {
 		$resource3	= mysql_query('SELECT * FROM `' .$config->bans. '` WHERE `admin_id` = "' .$_GET['q']. '" ORDER BY `ban_created` DESC') or die(mysql_error());
@@ -126,20 +126,20 @@ if ((isset($_GET['q']))) {
 		$bancount = $bancount+1;
 	    $bantype = $result3->ban_type;
 	    
-		if ($serverip != "") {
+		if ($serverip != '') {
 
 			// Get the gametype for each ban
-			$query4		= "SELECT gametype FROM $config->servers WHERE address = '$serverip'";
+			$query4		= 'SELECT `gametype` FROM `' .$config->servers. '` WHERE `address` = "' .$serverip. '"';
 			$resource4	= mysql_query($query4) or die(mysql_error());
 			while($result4 	= mysql_fetch_object($resource4)) {
 				$gametype = $result4->gametype;
 			}
 		} else {
-			$gametype = "html";
+			$gametype = 'html';
 		}
 
 		if(empty($duration)) {
-			$duration = lang("_PERMANENT");
+			$duration = lang('_PERMANENT');
 		}	else {
 			$duration = "$duration " . lang("_MINS");
 		}
@@ -201,10 +201,10 @@ if ((isset($_GET['q']))) {
 		
 		$ex_bancount = $ex_bancount+1;
 
-		if ($ex_serverip != "") {
+		if ($ex_serverip != '') {
 
 			// Get the gametype for each ban
-			$query6		= "SELECT gametype FROM $config->servers WHERE address = '$ex_serverip'";
+			$query6		= 'SELECT `gametype` FROM `' .$config->servers. '` WHERE `address` = "' .$ex_serverip. '"';
 			$resource6	= mysql_query($query6) or die(mysql_error());
 
 			$ex_gametype = NULL;
@@ -213,30 +213,30 @@ if ((isset($_GET['q']))) {
 			}
 			
 			// If a ban that have a serverip that's NOT in the table amx_serverinfo use the steam icon
-			if ($ex_gametype == "")
-				$ex_gametype = "steam";
+			if ($ex_gametype == '')
+				$ex_gametype = 'steam';
 				
 		} else {
-			$ex_gametype = "html";
+			$ex_gametype = 'html';
 		}
 
 		if(empty($ex_duration)) {
-			$ex_duration = lang("_PERMANENT");
+			$ex_duration = lang('_PERMANENT');
 		}	else {
-			$ex_duration = "$ex_duration " . lang("_MINS");
+			$ex_duration = '$ex_duration ' . lang('_MINS');
 		}
 	
 		// Asign variables to the array used in the template
 		$exban_info = array(
-			"ex_gametype"	=> $ex_gametype,
-			"bhid"		=> $bhid,
-			"ex_date"	=> $ex_date,
-			"ex_player"	=> $ex_player,
-			"ex_admin"	=> $ex_admin,
-			"ex_reason"	=> $ex_reason,
-			"ex_duration"	=> $ex_duration,
-			"ex_bancount"	=> $ex_bancount
-			);
+			'ex_gametype' => $ex_gametype,
+			'bhid' => $bhid,
+			'ex_date' => $ex_date,
+			'ex_player' => $ex_player,
+			'ex_admin' => $ex_admin,
+			'ex_reason' => $ex_reason,
+			'ex_duration' => $ex_duration,
+			'ex_bancount' => $ex_bancount
+		);
 	
 		$exban_array[] = $exban_info;
 	}
@@ -247,59 +247,57 @@ if ((isset($_GET['q']))) {
 ****************************************************************/
 
 // Header
-$title = lang("_SEARCH");
+$title = lang('_SEARCH');
 
 // Section
-$section = "search";
+$section = 'search';
 
 // Parsing
 $smarty = new dynamicPage;
 
-$smarty->assign("meta","");
-$smarty->assign("title",$title);
-$smarty->assign("dir",$config->document_root);
+$smarty->assign('meta','');
+$smarty->assign('title', $title);
+$smarty->assign('dir', $config->document_root);
 
-$smarty->assign("fancy_layers", $config->fancy_layers);
-$smarty->assign("display_reason", $config->display_reason);
-$smarty->assign("display_search", $config->display_search);
-$smarty->assign("display_admin", $config->display_admin);
+$smarty->assign('fancy_layers', $config->fancy_layers);
+$smarty->assign('display_reason', $config->display_reason);
+$smarty->assign('display_search', $config->display_search);
+$smarty->assign('isplay_admin', $config->display_admin);
 
-$smarty->assign("this",$_SERVER['PHP_SELF']);
-$smarty->assign("section",$section);
-$smarty->assign("admins",$admin_array);
-$smarty->assign("servers",$server_array);
-$smarty->assign("bans", isset($ban_array) ? $ban_array : NULL);
-$smarty->assign("exbans", isset($exban_array) ? $exban_array : NULL);
+$smarty->assign('this', $_SERVER['PHP_SELF']);
+$smarty->assign('section', $section);
+$smarty->assign('admins', $admin_array);
+$smarty->assign('servers', $server_array);
+$smarty->assign('bans', isset($ban_array) ? $ban_array : NULL);
+$smarty->assign('exbans', isset($exban_array) ? $exban_array : NULL);
 
 if (isset($_GET['q'])) {
-	$smarty->assign("nick", $_GET['q']);
+	$smarty->assign('nick', $_GET['q']);
 }
 if (isset($_GET['steamid'])) {
-	$smarty->assign("steamid", $_GET['steamid']);
+	$smarty->assign('steamid', $_GET['steamid']);
 }
-if ( isset($_GET['ipaddress']) )
-{
-	$smarty->assign("ipaddress", $_GET['ipaddress']);
+if (isset($_GET['ipaddress'])) {
+	$smarty->assign('ipaddress', $_GET['ipaddress']);
 }
-if ( isset($_GET['reason']) )
-{
-	$smarty->assign("reason", $_GET['reason']);
+if (isset($_GET['reason'])) {
+	$smarty->assign('reason', $_GET['reason']);
 }
-if ( isset($_GET['date']) )
+if (isset($_GET['date']) )
 {
-	$smarty->assign("date", $_GET['date']);
+	$smarty->assign('date', $_GET['date']);
 }
-if ( isset($_GET['timesbanned']) )
+if (isset($_GET['timesbanned']) )
 {
-	$smarty->assign("timesbanned", get_post('timesbanned'));
+	$smarty->assign('timesbanned', get_post('timesbanned'));
 }
 if ( isset($_GET['admin']) )
 {
-	$smarty->assign("admin", get_post('admin'));
+	$smarty->assign('admin', get_post('admin'));
 }
 if ( isset($_GET['server']) )
 {
-	$smarty->assign("server", get_post('server'));
+	$smarty->assign('server', get_post('server'));
 }
 $smarty->display('main_header.tpl');
 $smarty->display('ban_search.tpl');
