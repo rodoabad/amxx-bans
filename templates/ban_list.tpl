@@ -63,7 +63,7 @@
                     {/if}
                 {/if}
                 -->
-                <a href="{$dir}/ban_details.php?bid={$bans.bid}"><i class="icon-user"></i></a> {$bans.player} 
+                <a href="{$dir}/ban_details.php?bid={$bans.bid}"><i class="icon-user"></i></a> {$bans.player}
             </td>
             <td>{$bans.player_id}</td>
             <td class="hidden-phone">

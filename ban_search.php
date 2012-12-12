@@ -106,13 +106,15 @@ if ((isset($_GET['q']))) {
 	
 	$ban_array	= array();
 	$timezone = $config->timezone_fix * 3600;
+    $timezone_correction = $config->timezone_fix * 3600;
 	$bancount = 0;
 
 	while($result3 = mysql_fetch_object($resource3)) {
 		$bid = $result3->bid;
-		$date = dateShorttime($result3->ban_created + $timezone);
+		//$date = dateShorttime($result3->ban_created + $timezone);
+		$date = date('n/j/y', $result3->ban_created + $timezone_correction);
 		
-		$playernick	= htmlentities($result3->player_nick, ENT_QUOTES);
+		$player	= htmlentities($result3->player_nick, ENT_QUOTES);
         $playerid = $result3->player_id;
         $playerip = $result3->player_ip;
         
@@ -140,23 +142,23 @@ if ((isset($_GET['q']))) {
 
 		if(empty($duration)) {
 			$duration = lang('_PERMANENT');
-		}	else {
+		} else {
 			$duration = "$duration " . lang("_MINS");
 		}
-	
+
 		// Asign variables to the array used in the template
 		$ban_info = array(
 			"gametype" => $gametype,
 			"bid" => $bid,
 			"date" => $date,
-			
-			"playernick" => $playernick,
+
+			"player" => $player,
 			"playerid" => $playerid,
 			"playerip" => $playerip,
-			
+
             "adminnick" => $adminnick,
 			"adminid"	=> $adminid,
-			
+
 			"reason" => $reason,
 			"duration" => $duration,
 			"serverip" => $serverip,

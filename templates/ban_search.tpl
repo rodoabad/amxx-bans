@@ -24,28 +24,39 @@
 		<h3>{'_ACTIVEBANS'|lang}</h3>
 		<table class="table table-bordered">
         	<tr>
-            	<th></th>
+            	<th>{'_LENGTH'|lang}</th>
+            	<th class="hidden-phone">Game</th>
             	<th>{"_DATE"|lang}</th>
             	<th>{"_PLAYER"|lang}</th>
             	<th>{"_ADMIN"|lang}</th>
             	{if $display_reason == "enabled"}
 	                <th>{'_REASON'|lang}</th>
             	{/if}
-            	<th>{'_LENGTH'|lang}</th>
+            	
             	<th>Server</th>
             	<!-- <th>Options</th> -->            
 			</tr>
           	
           	{foreach from=$bans item=bans}
           		<tr>
-            		<td><img src='{$dir}/images/{$bans.gametype}.gif'></td>
+          		    <td>
+          		        {if $bans.duration == 'Permanent'}
+          		            <span class="label label-important">{$bans.duration}</span>
+          		        {else}
+                            <span class="label label-warning">{$bans.duration}</span>
+                        {/if}
+          		    </td>
+            		<!-- <td><img src='{$dir}/images/{$bans.gametype}.gif'></td> -->
+            		<td class="hidden-phone"><span class="label label-info">{$bans.gametype}</span></td>
             		<td>{$bans.date}</td>
-            		<td>{$bans.playernick}</td>
+            		<td>
+            		  <a href="{$dir}/ban_details.php?bid={$bans.bid}"><i class="icon-user"></i></a> {$bans.player}
+            		</td>
             		<td>{if $display_admin == "enabled" || ($smarty.session.bans_add == "yes")}{$bans.adminnick}{else}{"_HIDDEN"|lang}{/if}</td>
            			{if $display_reason == "enabled"}
            				<td>{$bans.reason}</td>
            			{/if}
-            		<td>{$bans.duration}</td>
+            		
             		<td>{$bans.servername} ({$bans.gametype})</td>
           			<!--
           			<td>
