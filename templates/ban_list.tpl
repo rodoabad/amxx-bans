@@ -128,11 +128,15 @@
                                 <th>{'_BANBY'|lang}</th>
                                 <td>
                                     {if $display_admin == 'enabled' || ($smarty.session.bans_add == 'yes')}
-                                        {$bans.admin} ({$bans.webadmin}
+                                        {$bans.admin} ({$bans.webadmin})
                                     {else}
                                         {'_HIDDEN'|lang}
                                     {/if}
                                 </td>
+                            </tr>
+                            <tr>
+                                <th>Game Type</th>
+                                <td>{$bans.gametype}</td>
                             </tr>
                             <tr>
                                 <th>{'_BANON'|lang}</th>
