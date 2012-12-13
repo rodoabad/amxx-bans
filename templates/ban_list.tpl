@@ -175,10 +175,10 @@
                             </form>
                         {/if}
                         -->
-                        <a href="javascript:void(0)" class="btn">Close</a>
                         <a href="{$dir}/ban_details.php?bid={$bans.bid}">
                             <button class="btn btn-info">{'_BANPAGE'|lang}</button>
                         </a>
+                        <a href="javascript:void(0)" class="btn">Close</a>
                     </div>
                 </div>
          <script type="text/javascript">
