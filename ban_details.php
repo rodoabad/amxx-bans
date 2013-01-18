@@ -27,50 +27,50 @@ if((isset($_GET['bid']) && is_numeric($_GET['bid'])) || (isset($_GET['bhid']) &&
 	} else {
 		$get_ban_id = 'SELECT * FROM `' .$config->ban_history. '` WHERE `bhid` = "' .mysql_escape_string($_GET['bhid']). '"';
 	}
-	
-	$resource = mysql_query($get_ban_id) or die(mysql_error());	
+
+	$resource = mysql_query($get_ban_id) or die(mysql_error());
 	$numrows = mysql_num_rows($resource);
-	
+
 	if(mysql_num_rows($resource) == 0) {
 		trigger_error("Can't find ban with given ID.", E_USER_NOTICE);
 	} else {
 		$result = mysql_fetch_object($resource);
-		
+
 		// Get the AMX username of the admin if the ban was invoked from inside the server
 		if($result->server_name != "website") {
 			//$query2 = "SELECT nickname FROM $config->amxadmins WHERE steamid = '".$result->admin_id."'";
-			$query2 = "SELECT nickname FROM $config->amxadmins WHERE username = '".$result->admin_id."' OR username = '".$result->admin_ip."' OR username = '".$result->admin_nick."'";		
-			$resource2 = mysql_query($query2) or die(mysql_error());	
+			$query2 = "SELECT nickname FROM $config->amxadmins WHERE username = '".$result->admin_id."' OR username = '".$result->admin_ip."' OR username = '".$result->admin_nick."'";
+			$resource2 = mysql_query($query2) or die(mysql_error());
 			$result2 = mysql_fetch_object($resource2);
-			
+
 			$admin_amxname = htmlentities(($result2) ? $result2->nickname : "", ENT_QUOTES);
 		}
-		
+
 		// Prepare all the variables
 		//$player_name = htmlentities($result->player_nick, ENT_QUOTES);
 		$player_name = $result->player_nick;
-		
+
 		if(!empty($result->player_ip)) {
 			$player_ip = htmlentities($result->player_ip, ENT_QUOTES);
 		} else {
 			$player_ip = "<i><font color='#677882'>" . lang("_NOIP") . "</font></i>";
 		}
-		
+
 		if(!empty($result->player_id)) {
 			$player_id = htmlentities($result->player_id, ENT_QUOTES);
 		} else {
 			//$player_id = "<i><font color='#677882'>" . lang("_NOSTEAMID") . "</font></i>";
 			$player_id = "&nbsp;";
 		}
-		
+
 		$timezone = $config->timezone_fix * 3600;
 		$ban_start = dateShorttime($result->ban_created + $timezone);
-		
+
 		if(empty($result->ban_length) OR $result->ban_length == 0) {
 			$ban_duration = lang("_PERMANENT");
 			$ban_end = "" . lang("_NOTAPPLICABLE") . "";
 		} else {
-			
+
 			//echo $timezone;
 			$ban_duration = $result->ban_length."&nbsp;" . lang("_MINS");
 			$date_and_ban = $result->ban_created + $timezone + ($result->ban_length * 60);
@@ -82,22 +82,22 @@ if((isset($_GET['bid']) && is_numeric($_GET['bid'])) || (isset($_GET['bhid']) &&
 				$ban_end = dateShorttime($date_and_ban)."&nbsp;(".timeleft($now + $timezone,$date_and_ban)."&nbsp;".lang("_REMAINING").")";
 			}
 		}
-		
+
 		if($result->ban_type == "SI") {
 			$ban_type = lang("_STEAMID&IP");
 		} else {
 			$ban_type = "Steam ID";
 		}
-		
+
 		//$ban_reason = htmlentities($result->ban_reason, ENT_QUOTES);
 		$ban_reason = $result->ban_reason;
-		
+
 		if($result->server_name != "website") {
 			//$query2 = "SELECT nickname FROM $config->amxadmins WHERE steamid = '".$result->admin_id."'";
-			$query2 = "SELECT nickname FROM $config->amxadmins WHERE username = '".$result->admin_id."' OR username = '".$result->admin_ip."' OR username = '".$result->admin_nick."'";	
-			$resource2 = mysql_query($query2) or die(mysql_error());	
+			$query2 = "SELECT nickname FROM $config->amxadmins WHERE username = '".$result->admin_id."' OR username = '".$result->admin_ip."' OR username = '".$result->admin_nick."'";
+			$resource2 = mysql_query($query2) or die(mysql_error());
 			$result2 = mysql_fetch_object($resource2);
-			
+
 			//$admin_name = htmlentities($result->admin_nick, ENT_QUOTES)." (".htmlentities(($result2) ? $result2->nickname : "", ENT_QUOTES).")";
 			$server_name = $result->server_name;
             $server_ip = $result->server_ip;
@@ -120,11 +120,11 @@ if((isset($_GET['bid']) && is_numeric($_GET['bid'])) || (isset($_GET['bhid']) &&
         if ($config->geoip == 'enabled') {
             $gi = geoip_open($config->path_root . '/include/GeoIP.dat', GEOIP_STANDARD);
             $ga = geoip_open($config->path_root . '/include/GeoLiteCity.dat', GEOIP_STANDARD);
-            
+
             $cc = geoip_country_code_by_addr($gi, $player_ip);
             $cn = geoip_country_name_by_addr($gi, $player_ip);
             $ct = geoip_record_by_addr($ga, $player_ip);
-            
+
             geoip_close($gi);
             geoip_close($ga);
         }
@@ -154,8 +154,8 @@ if((isset($_GET['bid']) && is_numeric($_GET['bid'])) || (isset($_GET['bhid']) &&
 			"amx_name"	=> isset($admin_amxname) ? $admin_amxname : "",
 			"server_ip" => $server_ip,
 			"server_name"	=> $server_name
-			);	
-		
+			);
+
 		if(isset($_GET["bhid"])) {
 			$unban_info = array(
 				"verify"	=> TRUE,
@@ -165,50 +165,58 @@ if((isset($_GET['bid']) && is_numeric($_GET['bid'])) || (isset($_GET['bhid']) &&
 				);
 		}
 	}
-	
+
 	if(isset($_GET["bid"])) {
 		// Make the array for the history ban list
 		if($result->player_id <> "")
 		{
-			$query = "SELECT bhid, player_nick, admin_nick, ban_length, ban_reason, ban_created, server_ip FROM $config->ban_history WHERE player_id = '".$result->player_id."' ORDER BY ban_created DESC";
+            $octets = explode('.', $result->player_ip);
+            //$ban_evade = $first_octet + '.' + $second_octet + '.';
+            //$history_octet = $octets[0] . '.' . $octets[1] . '.' . $octets[2] . '.';
+            $history_octet = $octets[0] . '.' . $octets[1] . '.';
+			//$query = "SELECT * FROM $config->ban_history WHERE player_ip = '".$result->player_ip."' ORDER BY ban_created DESC";
+			$query = "SELECT * FROM $config->bans WHERE player_ip LIKE '%".$history_octet."%' ORDER BY ban_created DESC";
 		}
 		else // Search for IP bans
 		{
-			$query = "SELECT bhid, player_nick, admin_nick, ban_length, ban_reason, ban_created, server_ip FROM $config->ban_history WHERE player_ip = '".$result->player_ip."' ORDER BY ban_created DESC";
+			$query = "SELECT * FROM $config->ban_history WHERE player_ip = '".$result->player_ip."' ORDER BY ban_created DESC";
 		}
 		$resource = mysql_query($query) or die(mysql_error());
-		
+
 		$unban_array = array();
-		
 		while($result = mysql_fetch_object($resource)) {
-			$bhid = $result->bhid;
-			$date = dateMonth($result->ban_created);
+			$bid = $result->bid;
+			$date = dateRFC822($result->ban_created);
 			$player = htmlentities($result->player_nick, ENT_QUOTES);
+            $player_id = $result->player_id;
+            $player_ip = $result->player_ip;
 			$admin = htmlentities($result->admin_nick, ENT_QUOTES);
 			$reason = htmlentities($result->ban_reason, ENT_QUOTES);
 			$duration = $result->ban_length;
-			
+
 			if(empty($duration)) {
 				$duration = lang("_PERMANENT");
 			}
-			
+
 			else {
 				$duration = "$duration" . lang("_MINS");
 			}
-			
+
 			// Asign variables to the array used in the template
 			$unban_info = array(
-				"bhid" => $bhid,
+				"bid" => $bid,
 				"date" => $date,
+				"player_id" => $player_id,
+				"player_ip" => $player_ip,
 				"player" => $player,
 				"admin" => $admin,
 				"reason" => $reason,
 				"duration" => $duration
 				);
-			
+
 			$unban_array[] = $unban_info;
 		}
-		
+
 		$history = TRUE;
 	}
 }

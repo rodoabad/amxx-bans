@@ -1,12 +1,12 @@
 <!--
 <table width='100%' border='0' cellpadding='0' cellspacing='0'>
     <tr>
-       
 
-        
-        
+
+
+
         {if $ban_info.id_type == "bhid"}
-        
+
             {if (($smarty.session.bans_edit == "yes") || (($smarty.session.bans_edit == "own") && ($smarty.session.uid == $bans.webadmin)))}
                 <form name="delete" method="post" action="{$dir}/admin/edit_ban_ex.php">
                 <input type='hidden' name='action' value='edit_ex'>
@@ -14,7 +14,7 @@
         <td align='right' width='2%'>
                 <input type='image' SRC='{$dir}/images/edit.gif' name='action' ALT='{"_EDIT"|lang}'><img src='{$dir}/images/spacer.gif' width='1px' height='1'></td></form>
             {/if}
-            
+
         {if (($smarty.session.bans_delete == "yes") || (($smarty.session.bans_delete == "own") && ($smarty.session.uid == $bans.webadmin)))}
                 <form name="unban" method="post" action="{$dir}/admin/edit_ban_ex.php">
                 <input type='hidden' name='action' value='delete_ex'>
@@ -134,7 +134,7 @@
     </tbody>
 </table>
 
-				
+
 {if $unban_info.verify == "TRUE"}
         <table cellspacing='1' class='listtable' width='100%'>
           <tr>
@@ -154,37 +154,43 @@
           </tr>
         </table>
 {/if}
-  
+
 {if $history == "TRUE"}
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>{"_BANHISTORY"|lang}</th>
+                <!-- <th>{"_BANHISTORY"|lang}</th> -->
+                <th>Related Bans</th>
             </tr>
         </thead>
         <tbody>
             {foreach from=$bhans item=bhans}
-                <tr onClick="document.location = '{$dir}/ban_details.php?bhid={$bhans.bhid}';" onMouseOver="this.style.backgroundColor='#C7CCD2'" onMouseOut="this.style.backgroundColor='#D3D8DC'">
-                    <td height='16' width='{if $display_reason == "enabled"}10%{else}15%{/if}' class='listtable_1'>{$bhans.date}</td>
-                    <td height='16' width='{if $display_reason == "enabled"}23%{else}33%{/if}' class='listtable_1'>{$bhans.player}</td>
-                    <td height='16' width='{if $display_reason == "enabled"}20%{else}30%{/if}' class='listtable_1'>{if ($display_admin == "enabled") || ($smarty.session.bans_add == "yes")}{$bhans.admin}{else}<i><font color='#677882'>{"_HIDDEN"|lang}</font></i>{/if}</td>
-                    {if $display_reason == "enabled"}<td height='16' width='25%' class='listtable_1'>{$bhans.reason}</td>{/if}
-                    <td height='16' width='16%' class='listtable_1'>{$bhans.duration}</td>
-                    
-                    
+                {if $bhans.player_id != $ban_info.player_id}
+                <tr>
+                    <td>{$bhans.date}</td>
+                    <td><a href="{$dir}/ban_details.php?bid={$bhans.bid}">{$bhans.player}</a></td>
+                    <!-- <td>{if ($display_admin == "enabled") || ($smarty.session.bans_add == "yes")}{$bhans.admin}{else}<i><font color='#677882'>{"_HIDDEN"|lang}</font></i>{/if}</td> -->
+                    <td>{$bhans.player_id}</td>
+                    <td>{$bhans.player_ip}</td>
+                    {if $display_reason == "enabled"}<td>{$bhans.reason}</td>{/if}
+                    <td>{$bhans.duration}</td>
+
+                    <!--
                     <td height='16' width='4%' class='listtable_1'>
-            <table width='100%' border='0' cellpadding='0' cellspacing='0'>
-        			<tr>
-        				{if (($smarty.session.bans_edit == "yes") || (($smarty.session.bans_edit == "own") && ($smarty.session.uid == $bans.webadmin)))}
-        				<form name="delete" method="post" action="{$dir}/admin/edit_ban_ex.php"><input type='hidden' name='action' value='edit_ex'><input type='hidden' name='bhid' value='{$bhans.bhid}'><td align='right' width='2%'><input type='image' SRC='{$dir}/images/edit.gif' name='action' ALT='{"_EDIT"|lang}'><img src='{$dir}/images/spacer.gif' width='1px' height='1'></td></form>
-        				{/if}
-        				{if (($smarty.session.bans_delete == "yes") || (($smarty.session.bans_delete == "own") && ($smarty.session.uid == $bans.webadmin)))}
-        				<form name="unban" method="post" action="{$dir}/admin/edit_ban_ex.php"><input type='hidden' name='action' value='delete_ex'><input type='hidden' name='bhid' value='{$bhans.bhid}'><td align='right' valign='top' width='2%'><input type='image' src='{$dir}/images/delete.gif' name='delete' alt='{"_DELETE"|lang}' onclick="javascript:return confirm('{"_WANTTOREMOVE"|lang} ban_id {$bhans.bhid}?')"></td></form>
-        				{/if}
-        			</tr>
-        		</table>
+                        <table width='100%' border='0' cellpadding='0' cellspacing='0'>
+                			<tr>
+                				{if (($smarty.session.bans_edit == "yes") || (($smarty.session.bans_edit == "own") && ($smarty.session.uid == $bans.webadmin)))}
+                				<form name="delete" method="post" action="{$dir}/admin/edit_ban_ex.php"><input type='hidden' name='action' value='edit_ex'><input type='hidden' name='bhid' value='{$bhans.bhid}'><td align='right' width='2%'><input type='image' SRC='{$dir}/images/edit.gif' name='action' ALT='{"_EDIT"|lang}'><img src='{$dir}/images/spacer.gif' width='1px' height='1'></td></form>
+                				{/if}
+                				{if (($smarty.session.bans_delete == "yes") || (($smarty.session.bans_delete == "own") && ($smarty.session.uid == $bans.webadmin)))}
+                				<form name="unban" method="post" action="{$dir}/admin/edit_ban_ex.php"><input type='hidden' name='action' value='delete_ex'><input type='hidden' name='bhid' value='{$bhans.bhid}'><td align='right' valign='top' width='2%'><input type='image' src='{$dir}/images/delete.gif' name='delete' alt='{"_DELETE"|lang}' onclick="javascript:return confirm('{"_WANTTOREMOVE"|lang} ban_id {$bhans.bhid}?')"></td></form>
+                				{/if}
+                			</tr>
+                        </table>
                     </td>
-                  </tr>
+                -->
+                </tr>
+                {/if}
             {foreachelse}
                 <tr class="info">
                     <td><i class="icon-info-sign"></i> {"_NOBANS"|lang}</td>
@@ -210,12 +216,12 @@
                         mapTypeId: google.maps.MapTypeId.ROADMAP
                     {rdelim};
                     var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-                    
+
                     var marker = new google.maps.Marker({ldelim}
                         position: myLatlng,
                         map: map,
                     {rdelim});
                 {rdelim}
-            
+
                 google.maps.event.addDomListener(window, 'load', initialize);
-</script>                
+</script>
