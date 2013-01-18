@@ -54,7 +54,7 @@
             -->
             <td class="hidden-phone">{$bans.date}</td>
             <td class="hidden-phone">
-                <!-- 
+                <!--
                 {if $geoip == 'enabled'}
                     {if $bans.cc != ''}
                         <img style="vertical-align:baseline" src="{$dir}/images/flags/{$bans.cc|lower}.png" alt="{$bans.cn}" title="{$bans.cn}"/>
@@ -106,7 +106,7 @@
                             </tr>
                             <tr>
                                 <th>{'_IP'|lang}</th>
-                                <td>{$bans.player_ip}</td> 
+                                <td>{$bans.player_ip}</td>
                             </tr>
                             <tr>
                                 <th>{'_INVOKED'|lang}</th>
@@ -142,14 +142,17 @@
                                 <th>{'_BANON'|lang}</th>
                                 <td>{$bans.server_name}</td>
                             </tr>
+                            <!--
                             <tr>
                                 <th>{'_PREVOFF'|lang}</th>
                                 <td>{$bans.bancount}</td>
                             </tr>
+                            -->
                         </table>
-                        
+
                     </div>
                     <div class="modal-footer">
+
                         <!--
                         {if (($smarty.session.bans_edit == "yes") || (($smarty.session.bans_edit == "own") && ($smarty.session.uid == $bans.webadmin)))}
                             <form class="form-inline" name="delete" method="post" action="{$dir}/admin/edit_ban.php">
@@ -158,7 +161,7 @@
                                 <button class="btn" type="submit" name="edit">{"_EDIT"|lang}</button>
                             </form>
                         {/if}
-                        
+                        -->
                         {if (($smarty.session.bans_unban == "yes") || (($smarty.session.bans_unban == "own") && ($smarty.session.uid == $bans.webadmin)))}
                             <form class="form-inline" name="unban" method="post" action="{$dir}/admin/edit_ban.php">
                                 <input type="hidden" name="action" value="unban">
@@ -166,7 +169,7 @@
                                 <button class="btn btn-warning" type="submit" name="unban">{"_UNBAN"|lang}</button>
                             </form>
                         {/if}
-                        
+                        <!--
                         {if (($smarty.session.bans_delete == 'yes') || (($smarty.session.bans_delete == 'own') && ($smarty.session.uid == $bans.webadmin)))}
                             <form class="form-inline" name="unban" method="post" action="{$dir}/admin/edit_ban.php">
                                 <input type="hidden" name="action" value="delete">
@@ -198,14 +201,14 @@
                         mapTypeId: google.maps.MapTypeId.ROADMAP
                     {rdelim};
                     var map = new google.maps.Map(document.getElementById('map-canvas-{$bans.bid}'), mapOptions);
-                    
+
                     var marker = new google.maps.Marker({ldelim}
                         position: myLatlng,
                         map: map,
-                        title: 'Hello world!' 
+                        title: 'Hello world!'
                     {rdelim});
                 {rdelim}
-            
+
                 google.maps.event.addDomListener(window, 'load', initialize);
                 */
             {rdelim});
@@ -217,7 +220,7 @@
             <td colspan="{if $fancy_layers != 'enabled'}5{else}6{/if}">{'_NOBANSFOUND'|lang}</td>
           </tr>
 {/foreach}
-</tbody>        
+</tbody>
 </table>
 <div style="text-align:center">{$pages_results}</div>
     <ul class="pager">
@@ -227,8 +230,8 @@
         <li class="next">
             {$next_button}
         </li>
-          
+
     </ul>
-<script>    
+<script>
 
 </script>
