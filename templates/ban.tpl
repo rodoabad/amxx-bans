@@ -123,7 +123,7 @@
         </tr>
         <tr>
             <th>{'_ORIGIN'|lang}</th>
-            <td>
+            <td class="{$ban_info.cn|replace:' ':'-'|lower}">
                 {if $ban_info.ctname}
                     {$ban_info.ctname}, {$ban_info.cn} (LAT {$ban_info.ctlat}, LONG {$ban_info.ctlong})
                 {else}
@@ -160,7 +160,7 @@
         <thead>
             <tr>
                 <!-- <th>{"_BANHISTORY"|lang}</th> -->
-                <th colspan="6">Related Bans (Found {$bhans|@count} Matches)</th>
+                <th colspan="6">Related Bans (Found {math equation="bhans - 1" bhans=$bhans|@count} Matches)</th>
             </tr>
         </thead>
         <tbody>
@@ -173,20 +173,6 @@
                     <td>{$bhans.player_id}</td>
                     <td>{$bhans.player_ip}</td>
                     {if $display_reason == "enabled"}<td>{$bhans.reason}</td>{/if}
-                    <!--
-                    <td height='16' width='4%' class='listtable_1'>
-                        <table width='100%' border='0' cellpadding='0' cellspacing='0'>
-                			<tr>
-                				{if (($smarty.session.bans_edit == "yes") || (($smarty.session.bans_edit == "own") && ($smarty.session.uid == $bans.webadmin)))}
-                				<form name="delete" method="post" action="{$dir}/admin/edit_ban_ex.php"><input type='hidden' name='action' value='edit_ex'><input type='hidden' name='bhid' value='{$bhans.bhid}'><td align='right' width='2%'><input type='image' SRC='{$dir}/images/edit.gif' name='action' ALT='{"_EDIT"|lang}'><img src='{$dir}/images/spacer.gif' width='1px' height='1'></td></form>
-                				{/if}
-                				{if (($smarty.session.bans_delete == "yes") || (($smarty.session.bans_delete == "own") && ($smarty.session.uid == $bans.webadmin)))}
-                				<form name="unban" method="post" action="{$dir}/admin/edit_ban_ex.php"><input type='hidden' name='action' value='delete_ex'><input type='hidden' name='bhid' value='{$bhans.bhid}'><td align='right' valign='top' width='2%'><input type='image' src='{$dir}/images/delete.gif' name='delete' alt='{"_DELETE"|lang}' onclick="javascript:return confirm('{"_WANTTOREMOVE"|lang} ban_id {$bhans.bhid}?')"></td></form>
-                				{/if}
-                			</tr>
-                        </table>
-                    </td>
-                    -->
                 </tr>
                 {/if}
             {foreachelse}
