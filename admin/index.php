@@ -1,3 +1,3 @@
 <?php
 
-header( "Location:../ban_list.php" ); ?>
+header( "Location:../list.php" ); ?>

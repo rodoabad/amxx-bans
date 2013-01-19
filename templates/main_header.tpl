@@ -46,9 +46,9 @@
                 <div class="nav-collapse">
                     <ul class="nav">
                         <li class="divider-vertical"></li>
-                        <li class="{if $section == 'banlist'}active{/if}"><a href="{$dir}/ban_list.php">Ban List</a></li>
+                        <li class="{if $section == 'banlist'}active{/if}"><a href="{$dir}/list.php">Ban List</a></li>
                         {if $display_search == 'enabled' || ($smarty.session.bans_add == 'yes')}
-                            <li class="{if $section == 'search'}active{/if}"><a href="{$dir}/ban_search.php">Search</a></li>
+                            <li class="{if $section == 'search'}active{/if}"><a href="{$dir}/search.php">Search</a></li>
                         {/if}
                         {if isset($smarty.session.uid)}
                             <li class="dropdown">

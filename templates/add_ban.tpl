@@ -80,5 +80,5 @@
           </form>
         </table>
 {else}
-<h1>YOU NEED TO LOGIN!!!</h1>   
+<h1>YOU NEED TO LOGIN!!!</h1>
 {/if}

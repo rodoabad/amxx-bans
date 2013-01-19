@@ -42,7 +42,7 @@ $result		= mysql_fetch_object($resource);
 // Get the page number, if no number is defined make default 1
 if(isset($_GET['page']) AND is_numeric($_GET['page'])) {
 	$page = $_GET['page'];
-	
+
 	if($page < 1) {
 		trigger_error("Pagenumbers need to be >= 1.", E_USER_NOTICE);
 	}
@@ -61,10 +61,10 @@ if(isset($_GET["view"]) AND is_numeric($_GET["view"])) {
 if($result->all_bans < $view) {
 	$query_start = 0;
 	$query_end = $view;
-	
+
 	$page_start = 1;
 	$page_end = $result->all_bans;
-	
+
 	$pages_results = "Results ".$page_start." to ".$page_end;
 }
 
@@ -72,50 +72,50 @@ else {
 	if($page == 1) {
 		$query_start = 0;
 		$query_end = $view;
-	
+
 		$page_start = 1;
 		$page_end = $view;
-		
+
 		$pages_results = lang("_DISPLAYING")."&nbsp;".$page_start." - ".$page_end."&nbsp;".lang("_OF")."&nbsp;".$result->all_bans."&nbsp;".lang("_RESULTS");
-		
+
 		$next_page = $page + 1;
-		
+
 		$previous_button = NULL;
-		$next_button = "<a href='".$config->document_root."/ban_list.php?view=".$view."&amp;page=".$next_page."' class='hover_black'>Next &rarr;</a>";
+		$next_button = "<a href='".$config->document_root."/list.php?view=".$view."&amp;page=".$next_page."' class='hover_black'>Next &rarr;</a>";
 	}
-	
+
 	else {
 		$remaining = $result->all_bans % $view;
 		$pages = ($result->all_bans - $remaining) / $view;
-		
+
 		$query_start = $view * ($page - 1);
 		$query_end = $view;
-		
+
 		if($page > $pages + 1) {
 			trigger_error("De pagina die je hebt opgegeven bestaat niet.", E_USER_NOTICE);
 		}
-		
+
 		elseif($page == $pages + 1) {
 			$page_start = ($view * ($page - 1)) + 1;
 			$page_end = $page_start + $remaining - 1;
-			
+
 			$previous_page = $page - 1;
-			
-			$previous_button = "<a href='".$config->document_root."/ban_list.php?view=".$view."&amp;page=".$previous_page."' class='hover_black'>&larr; Prev</a>";
+
+			$previous_button = "<a href='".$config->document_root."/list.php?view=".$view."&amp;page=".$previous_page."' class='hover_black'>&larr; Prev</a>";
 			$next_button = NULL;
 		}
-			
+
 		else {
 			$page_start = ($view * ($page - 1)) + 1;
 			$page_end = $page_start + ($view - 1);
-			
+
 			$previous_page = $page - 1;
 			$next_page = $page + 1;
-			
-			$previous_button = "<a href='".$config->document_root."/ban_list.php?view=".$view."&amp;page=".$previous_page."' class='hover_black'>&larr; Prev</a>";
-			$next_button = "<a href='".$config->document_root."/ban_list.php?view=".$view."&amp;page=".$next_page."' class='hover_black'>Next &rarr;</a>";
+
+			$previous_button = "<a href='".$config->document_root."/list.php?view=".$view."&amp;page=".$previous_page."' class='hover_black'>&larr; Prev</a>";
+			$next_button = "<a href='".$config->document_root."/list.php?view=".$view."&amp;page=".$next_page."' class='hover_black'>Next &rarr;</a>";
 		}
-		
+
 		$pages_results = lang("_DISPLAYING")."&nbsp;".$page_start." - ".$page_end."&nbsp;".lang("_OF")."&nbsp;".$result->all_bans."&nbsp;".lang("_RESULTS");
 
 	}
@@ -123,7 +123,7 @@ else {
 
 // Make the array for the ban list
 if ($config->fancy_layers != "enabled") {
-	if ($config->display_reason == "enabled") {  
+	if ($config->display_reason == "enabled") {
 		$resource	= mysql_query("SELECT bid, player_ip, player_nick, admin_nick, ban_reason, ban_created, ban_length, server_ip FROM $config->bans ORDER BY ban_created DESC LIMIT ".$query_start.",".$query_end) or die(mysql_error());
 	} else {
 		$resource	= mysql_query("SELECT bid, player_ip, player_nick, admin_nick, ban_reason, ban_created, ban_length, server_ip FROM $config->bans ORDER BY ban_created DESC LIMIT ".$query_start.",".$query_end) or die(mysql_error());
@@ -156,7 +156,7 @@ while($result = mysql_fetch_object($resource)) {
 		} else {
 			$player_ip = "<i><font color='#677882'>" . lang("_NOIP") . "</font></i>";
 		}
-		
+
 		if(!empty($result->player_id)) {
 			$steamid = htmlentities($result->player_id, ENT_QUOTES);
 		} else {
@@ -166,7 +166,7 @@ while($result = mysql_fetch_object($resource)) {
 
 		$ldate		= dateShorttime($result->ban_created + $timezone_correction);
 		$banlength	= $result->ban_length;
-	
+
 		if(empty($result->ban_length) OR $result->ban_length == 0) {
 			$ban_duration = lang("_PERMANENT");
 			$ban_end = lang("_NOTAPPLICABLE");
@@ -181,20 +181,20 @@ while($result = mysql_fetch_object($resource)) {
 				$ban_end = dateShorttime($date_and_ban)."&nbsp; (".timeleft($now,$date_and_ban) ."&nbsp;". lang("_REMAINING") .")";
 			}
 		}
-		
+
 		if($result->ban_type == "SI") {
 			$ban_type = lang("_STEAMID&IP");
 		} else {
 			$ban_type = "SteamID";
 		}
-		
+
 		if($result->server_name != "website") {
-			//$query2 = "SELECT nickname FROM $config->amxadmins WHERE steamid = '".$result->admin_id."'";	
-			$query2 = "SELECT nickname FROM $config->amxadmins WHERE username = '".$result->admin_id."' OR username = '".$result->admin_ip."' OR username = '".$result->admin_nick."'";	
-			$resource2 = mysql_query($query2) or die(mysql_error());	
+			//$query2 = "SELECT nickname FROM $config->amxadmins WHERE steamid = '".$result->admin_id."'";
+			$query2 = "SELECT nickname FROM $config->amxadmins WHERE username = '".$result->admin_id."' OR username = '".$result->admin_ip."' OR username = '".$result->admin_nick."'";
+			$resource2 = mysql_query($query2) or die(mysql_error());
 			$result2 = mysql_fetch_object($resource2);
 
-			
+
 			$admin_name = htmlentities($result->admin_nick, ENT_QUOTES);
 			if ( $result2 )
 			{
@@ -229,15 +229,15 @@ while($result = mysql_fetch_object($resource)) {
 
 
 // We dont need to count the bans if fancy layers arent enabled (Lantz69 060906)
-if ($config->fancy_layers == "enabled") {	
+if ($config->fancy_layers == "enabled") {
 	// get previous offences if any
 	//$resource4   = mysql_query("SELECT count(player_id) FROM $config->ban_history WHERE player_id = '$steamid'") or die(mysql_error());
 	//$bancount = mysql_result($resource4, 0);
-	
-	// get previous offences if any 
-	$resource4   = mysql_query("SELECT count(player_id) AS repeatOffence FROM $config->ban_history WHERE player_id = '$steamid'") or die(mysql_error()); 
-	while($result4 = mysql_fetch_object($resource4)) { 
-		$bancount = $result4->repeatOffence; 
+
+	// get previous offences if any
+	$resource4   = mysql_query("SELECT count(player_id) AS repeatOffence FROM $config->ban_history WHERE player_id = '$steamid'") or die(mysql_error());
+	while($result4 = mysql_fetch_object($resource4)) {
+		$bancount = $result4->repeatOffence;
 	}
 }
 
@@ -258,11 +258,11 @@ if ($config->fancy_layers == "enabled") {
 if ($config->geoip == 'enabled') {
 	$gi = geoip_open($config->path_root . '/include/GeoIP.dat', GEOIP_STANDARD);
     $ga = geoip_open($config->path_root . '/include/GeoLiteCity.dat', GEOIP_STANDARD);
-    
+
 	$cc = geoip_country_code_by_addr($gi, $player_ip);
 	$cn = geoip_country_name_by_addr($gi, $player_ip);
 	$ct = geoip_record_by_addr($ga, $player_ip);
-    
+
 	geoip_close($gi);
     geoip_close($ga);
 }
@@ -323,7 +323,7 @@ else {
 			);
 		}
 	}
-	
+
 	$ban_array[] = $ban_info;
 }
 
@@ -364,7 +364,7 @@ $smarty->assign("new_version",$new_version_exists);
 $smarty->assign("update_url",$config->update_url);
 
 $smarty->display('main_header.tpl');
-$smarty->display('ban_list.tpl');
+$smarty->display('list.tpl');
 $smarty->display('main_footer.tpl');
 
 ?>

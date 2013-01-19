@@ -42,14 +42,14 @@ while($admin_object = mysql_fetch_object($get_admin_list)) {
 		'steamid'	=> $steamid,
 		'nickname'	=> $nickname
 	);
-	
+
 	$admin_array[] = $admin_info;
 }
 
 // Make the array for the server list
 $server_list = 'SELECT DISTINCT `address`, `hostname` FROM `' .$config->servers. '` ORDER BY `hostname` ASC';
 $get_server_list = mysql_query($server_list) or die(mysql_error());
-	
+
 $server_array	= array();
 
 while($server_object = mysql_fetch_object($get_server_list)) {
@@ -61,7 +61,7 @@ while($server_object = mysql_fetch_object($get_server_list)) {
 		'address'	=> $address,
 		'hostname'	=> $hostname
 		);
-	
+
 	$server_array[] = $server_info;
 }
 
@@ -103,7 +103,7 @@ if ((isset($_GET['q']))) {
 	else if ($_GET['type'] == 'server') {
 		$resource3	= mysql_query('SELECT * FROM `' .$config->bans. '` WHERE `server_ip` LIKE "%' .$_GET['q']. '%" ORDER BY `ban_created` DESC') or die(mysql_error());
 	}
-	
+
 	$ban_array	= array();
 	$timezone = $config->timezone_fix * 3600;
     $timezone_correction = $config->timezone_fix * 3600;
@@ -113,21 +113,21 @@ if ((isset($_GET['q']))) {
 		$bid = $result3->bid;
 		//$date = dateShorttime($result3->ban_created + $timezone);
 		$date = date('n/j/y', $result3->ban_created + $timezone_correction);
-		
+
 		$player	= htmlentities($result3->player_nick, ENT_QUOTES);
         $playerid = $result3->player_id;
         $playerip = $result3->player_ip;
-        
+
 		$adminnick = htmlentities($result3->admin_nick, ENT_QUOTES);
         $adminid = htmlentities($result3->admin_id, ENT_QUOTES);
-        
+
 		$reason = htmlentities($result3->ban_reason, ENT_QUOTES);
 		$duration = $result3->ban_length;
 		$serverip = $result3->server_ip;
         $servername = $result3->server_name;
 		$bancount = $bancount+1;
 	    $bantype = $result3->ban_type;
-	    
+
 		if ($serverip != '') {
 
 			// Get the gametype for each ban
@@ -166,7 +166,7 @@ if ((isset($_GET['q']))) {
 			"bancount" => $bancount,
 			"bantype" => $bantype
 			);
-	
+
 		$ban_array[] = $ban_info;
 	}
 
@@ -191,7 +191,7 @@ if ((isset($_GET['q']))) {
 	$resource5	= mysql_query($query5) or die(mysql_error());
 	$exban_array	= array();
 	$ex_bancount = 0;
-	
+
 	while($result5 = mysql_fetch_object($resource5)) {
 		$bhid		= $result5->bhid;
 		$ex_date	= dateShorttime($result5->ban_created + $timezone);
@@ -200,7 +200,7 @@ if ((isset($_GET['q']))) {
 		$ex_reason      = $result5->ban_reason;
 		$ex_duration	= $result5->ban_length;
 		$ex_serverip	= $result5->server_ip;
-		
+
 		$ex_bancount = $ex_bancount+1;
 
 		if ($ex_serverip != '') {
@@ -213,11 +213,11 @@ if ((isset($_GET['q']))) {
 			while($result6 = mysql_fetch_object($resource6)) {
 				$ex_gametype = $result6->gametype;
 			}
-			
+
 			// If a ban that have a serverip that's NOT in the table amx_serverinfo use the steam icon
 			if ($ex_gametype == '')
 				$ex_gametype = 'steam';
-				
+
 		} else {
 			$ex_gametype = 'html';
 		}
@@ -227,7 +227,7 @@ if ((isset($_GET['q']))) {
 		}	else {
 			$ex_duration = '$ex_duration ' . lang('_MINS');
 		}
-	
+
 		// Asign variables to the array used in the template
 		$exban_info = array(
 			'ex_gametype' => $ex_gametype,
@@ -239,7 +239,7 @@ if ((isset($_GET['q']))) {
 			'ex_duration' => $ex_duration,
 			'ex_bancount' => $ex_bancount
 		);
-	
+
 		$exban_array[] = $exban_info;
 	}
 }
@@ -302,7 +302,7 @@ if ( isset($_GET['server']) )
 	$smarty->assign('server', get_post('server'));
 }
 $smarty->display('main_header.tpl');
-$smarty->display('ban_search.tpl');
+$smarty->display('search.tpl');
 $smarty->display('main_footer.tpl');
 
 ?>

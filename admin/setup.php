@@ -3,42 +3,42 @@
 // Make sure the installation hasn't already occurred (check for config.inc.php)
 
 if ( file_exists('../include/config.inc.php') ) {
-	header( 'Location:../ban_list.php' );
+	header( 'Location:../list.php' );
 	exit();
 }
 
 
-function display_post_get() { 
-   if ($_POST) { 
-      echo 'Displaying POST Variables: <br> \n'; 
-      echo '<table border=1> \n'; 
-      echo ' <tr> \n'; 
-      echo '  <td><b>result_name </b></td> \n '; 
-      echo '  <td><b>result_val  </b></td> \n '; 
-      echo ' </tr> \n'; 
-      while (list($result_nme, $result_val) = each($_POST)) { 
-         echo ' <tr> \n'; 
-         echo '  <td> $result_nme </td> \n'; 
-         echo '  <td> $result_val </td> \n'; 
-         echo ' </tr> \n'; 
-      } 
-      echo '</table> \n'; 
-   } 
-   if ($_GET) { 
-      echo 'Displaying GET Variables: <br> \n'; 
-      echo '<table border=1> \n'; 
-      echo ' <tr> \n'; 
-      echo '  <td><b>result_name </b></td> \n '; 
-      echo '  <td><b>result_val  </b></td> \n '; 
-      echo ' </tr> \n'; 
-      while (list($result_nme, $result_val) = each($_GET)) { 
-         echo ' <tr> \n'; 
-         echo '  <td> $result_nme </td> \n'; 
-         echo '  <td> $result_val </td> \n'; 
-         echo ' </tr> \n'; 
-      } 
-      echo '</table> \n'; 
-   } 
+function display_post_get() {
+   if ($_POST) {
+      echo 'Displaying POST Variables: <br> \n';
+      echo '<table border=1> \n';
+      echo ' <tr> \n';
+      echo '  <td><b>result_name </b></td> \n ';
+      echo '  <td><b>result_val  </b></td> \n ';
+      echo ' </tr> \n';
+      while (list($result_nme, $result_val) = each($_POST)) {
+         echo ' <tr> \n';
+         echo '  <td> $result_nme </td> \n';
+         echo '  <td> $result_val </td> \n';
+         echo ' </tr> \n';
+      }
+      echo '</table> \n';
+   }
+   if ($_GET) {
+      echo 'Displaying GET Variables: <br> \n';
+      echo '<table border=1> \n';
+      echo ' <tr> \n';
+      echo '  <td><b>result_name </b></td> \n ';
+      echo '  <td><b>result_val  </b></td> \n ';
+      echo ' </tr> \n';
+      while (list($result_nme, $result_val) = each($_GET)) {
+         echo ' <tr> \n';
+         echo '  <td> $result_nme </td> \n';
+         echo '  <td> $result_val </td> \n';
+         echo ' </tr> \n';
+      }
+      echo '</table> \n';
+   }
 }
 
 if (isset($_POST['action'])) {
@@ -81,7 +81,7 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 	$link = mysql_connect($_POST['db_host'], $_POST['db_user'], $_POST['db_pass']);
 
 	function TableExists($tablename, $db) {
-   
+
 		$result = mysql_list_tables($db);
 		$rcount = mysql_num_rows($result);
 
@@ -129,7 +129,7 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 	if ($tbl_levels_exists == "true") {
 
 		$check_ip_view = @mysql_query("SELECT ip_view FROM `".$_POST['tbl_levels']."` WHERE 1");
-	
+
 		if (!$check_ip_view) {
 			$add_ip_view = mysql_query("ALTER TABLE `".$_POST['tbl_levels']."` ADD `ip_view` ENUM( 'yes', 'no' ) DEFAULT 'no' NOT NULL") or die (mysql_error());
 			$update_amxlevels = 1;
@@ -175,7 +175,7 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 	if ($tbl_servers_exists == "true") {
 
 		$check_amxban_menu = @mysql_query("SELECT amxban_menu FROM `".$_POST['tbl_servers']."` WHERE 1");
-	
+
 		if (!$check_amxban_menu) {
 			$add_amxbans_menu = mysql_query("ALTER TABLE `".$_POST['tbl_servers']."` ADD `amxban_menu` int(10) DEFAULT '0' NOT NULL") or die (mysql_error());
 			$update_amxservers = 1;
@@ -211,7 +211,7 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 	if (($_POST['path_root'] == '') || ($_POST['dir_import'] == '') || ($_POST['dir_template'] == '')) {
 		$checked_dirs = 1; //some fields are left blank
 	} else {
-		
+
 		if (is_dir($_POST['path_root'])) {
 			$path_root_is_dir = 1;
 		} else {
@@ -245,24 +245,24 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Installation - AMXX Bans</title>	
-		
+		<title>Installation - AMXX Bans</title>
+
 		<meta http-equiv="pragma" content="no-cache" />
 		<meta http-equiv="cache-control" content="no-cache" />
-		
+
 		<link rel="stylesheet" type="text/css" href="../css/reset.css" />
 		<link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
 		<link rel="stylesheet" type="text/css" href="../css/amxbans.css" />
-		
+
 		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.3/bootstrap.min.js"></script>
-	
+
 	</head>
 
 	<body>
 		<div id="setup-container" class="span12">
 
-			
+
 			<? if ((isset($action)) && ($action == 'step 2' || $action == 'check tables')) { ?>
 					<h1>Step 2: Table Setup</h1>
 					<p>
@@ -284,18 +284,18 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 						<input type="hidden" name="tbl_servers" value="<?=isset($_POST['tbl_servers']) ? $_POST['tbl_servers'] : "" ?>">
 						<input type="hidden" name="tbl_logs" value="<?=isset($_POST['tbl_logs']) ? $_POST['tbl_logs'] : "" ?>">
 						<input type="hidden" name="tbl_reasons" value="<?=isset($_POST['tbl_reasons']) ? $_POST['tbl_reasons'] : "" ?>">
-						
+
 						<label>Bans</label>
 						<? if ((!isset($_POST['tbl_bans'])) && (!isset($tbl_bans_created))) { ?>
 							<input type="text" name="tbl_bans" value="<? if (!isset($POST['tbl_bans'])) { echo "amx_bans"; } else { print $_POST['tbl_bans']; } ?>" >
 						<? } else {
 							if ($tbl_bans_created == 0) {
-								echo 
+								echo
 									'<div class="alert">
 										<strong>Warning!</strong> Table \''.$_POST['tbl_bans'].'\' already exists, skipping...
 									</div>';
 							} else {
-								echo 
+								echo
 									'<div class="alert alert-success">
 										<strong>Status ok!</strong> Table \''.$_POST['tbl_bans'].'\' successfully created.
 									</div>';
@@ -306,12 +306,12 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 							<input type="text" name="tbl_banhistory" value="<? if (!isset($POST['tbl_banhistory'])) { echo "amx_banhistory"; } else { print $_POST['tbl_banhistory']; } ?>" >
 						<? } else {
 							if ($tbl_banhistory_created == 0) {
-								echo 
+								echo
 									'<div class="alert">
 										<strong>Warning!</strong> Table \''.$_POST['tbl_banhistory'].'\' already exists, skipping...
 									</div>';
 							} else {
-								echo 
+								echo
 									'<div class="alert alert-success">
 										<strong>Status ok!</strong> Table \''.$_POST['tbl_banhistory'].'\' successfully created.
 									</div>';
@@ -322,12 +322,12 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 							<input type="text" name="tbl_webadmins" value="<? if (!isset($POST['tbl_webadmins'])) { echo "amx_webadmins"; } else { print $_POST['tbl_webadmins']; } ?>" >
 						<? } else {
 							if ($tbl_webadmins_created == 0) {
-								echo 
+								echo
 									'<div class="alert">
 										<strong>Warning!</strong> Table \''.$_POST['tbl_webadmins'].'\' already exists, skipping...
 									</div>';
 							} else {
-								echo 
+								echo
 									'<div class="alert alert-success">
 										<strong>Status ok!</strong> Table \''.$_POST['tbl_webadmins'].'\' successfully created.
 									</div>';
@@ -338,12 +338,12 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 							<input type="text" name="tbl_amxadmins" value="<? if (!isset($POST['tbl_amxadmins'])) { echo "amx_amxadmins"; } else { print $_POST['tbl_amxadmins']; } ?>" >
 						<? } else {
 							if ($tbl_amxadmins_created == 0) {
-								echo 
+								echo
 									'<div class="alert">
 										<strong>Warning!</strong> Table \''.$_POST['tbl_amxadmins'].'\' already exists, skipping...
 									</div>';
 							} else {
-								echo 
+								echo
 									'<div class="alert alert-success">
 										<strong>Status ok!</strong> Table \''.$_POST['tbl_amxadmins'].'\' successfully created.
 									</div>';
@@ -351,21 +351,21 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 						}?>
 						<label>Levels</label>
 						<? if ((!isset($_POST['tbl_levels'])) && (!isset($tbl_levels_created))) { ?>
-							<input type="text" name="tbl_levels" value="<? if (!isset($POST['tbl_levels'])) { echo "amx_levels"; } else { print $_POST['tbl_levels']; } ?>" > <? } else { 
+							<input type="text" name="tbl_levels" value="<? if (!isset($POST['tbl_levels'])) { echo "amx_levels"; } else { print $_POST['tbl_levels']; } ?>" > <? } else {
 							if ($tbl_levels_created == 0) {
 								if ($update_amxlevels == 1) {
 									echo
 										'<div class="alert alert-info">
 											<strong>Heads Up!</strong> Found an older version of \''.$_POST['tbl_levels'].'\'. Upgrade to version 3 successful!
-										</div>';	
+										</div>';
 								} else {
 									echo
 										'<div class="alert">
 											<strong>Warning!</strong> Table \''.$_POST['tbl_levels'].'\' already exists, skipping...
-										</div>';							
+										</div>';
 								}
 							} else {
-								echo 
+								echo
 									'<div class="alert alert-success">
 										<strong>Status ok!</strong> Table \''.$_POST['tbl_levels'].'\' successfully created.
 									</div>';
@@ -376,7 +376,7 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 							<input type="text" name="tbl_admins_servers" value="<? if (!isset($POST['tbl_admins_servers'])) { echo "amx_admins_servers"; } else { print $_POST['tbl_admins_servers']; } ?>" >
 							<? } else {
 								if ($tbl_admins_servers_created == 0) {
-								echo 
+								echo
 									'<div class="alert">
 										<strong>Warning!</strong> Table \''.$_POST['tbl_admins_servers'].'\' already exists, skipping...
 									</div>';
@@ -387,7 +387,7 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 									</div>';
 								}
 							}?>
-	
+
 						<label>Server Info</label>
 						<? if ((!isset($_POST['tbl_servers'])) && (!isset($tbl_servers_created))) { ?>
 							<input type="text" name="tbl_servers" value="<? if (!isset($POST['tbl_servers'])) { echo "amx_serverinfo"; } else { print $_POST['tbl_servers']; } ?>" > <?
@@ -397,12 +397,12 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 									echo
 										'<div class="alert alert-info">
 											<strong>Heads Up!</strong> Found an older version of \''.$_POST['tbl_servers'].'\'. Upgrade to version 3.1 successful!
-										</div>';	
+										</div>';
 								} else {
 									echo
 									'<div class="alert">
 										<strong>Warning!</strong> Table \''.$_POST['tbl_servers'].'\' already exists, skipping...
-									</div>';								
+									</div>';
 								}
 							} else {
 								echo
@@ -416,7 +416,7 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 							<input type="text" name="tbl_logs" value="<? if (!isset($POST['tbl_logs'])) { echo "amx_logs"; } else { print $_POST['tbl_logs']; } ?>" >
 						<? } else {
 							if ($tbl_logs_created == 0) {
-								echo 
+								echo
 									'<div class="alert">
 										<strong>Warning!</strong> Table \''.$_POST['tbl_logs'].'\' already exists, skipping...
 									</div>';
@@ -432,7 +432,7 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 							<input type="text" name="tbl_reasons" value="<? if (!isset($POST['tbl_reasons'])) { echo "amx_banreasons"; } else { print $_POST['tbl_reasons']; } ?>" >
 						<? } else {
 							if ($tbl_reasons_created == 0) {
-								echo 
+								echo
 									'<div class="alert">
 										<strong>Warning!</strong> Table \''.$_POST['tbl_reasons'].'\' already exists, skipping...
 									</div>';
@@ -443,24 +443,24 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 									</div>';
 							}
 						}?>
-						
+
 						<div class="clearfix"></div>
-						
+
 						<? if (isset($_POST['check']) && $_POST['check'] == 'create') { ?>
 							<button class="btn btn-primary" type="submit" name="action" value="step 3"><i class="icon-ok icon-white"></i> Continue to step 3</button>
 						<? }else { ?>
 							<button class="btn btn-primary" type="submit" name="check" value="create" >Create Tables</button>
 						<? } ?>
 					</form>
-			
-			
+
+
 			<? } else if ((isset($action)) && ($action == 'step 3')) { ?>
-			
+
 				<h1>Step 3: Directory Setup</h1>
 				<p>
 					Enter the path-information for AMXBans here. This script tries to calculate the correct values. Do not change the default values if you are not sure what you are doing.
 				</p>
-			
+
 				<form class="well" name="section" method="post" action="<?=$_SERVER['PHP_SELF'] ?>">
 					<input type="hidden" name="action" value="<?=$_POST['action'] ?>">
 					<input type="hidden" name="db_host" value="<?=$_POST['db_host'] ?>">
@@ -476,30 +476,30 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 					<input type="hidden" name="tbl_servers" value="<?=$_POST['tbl_servers'] ?>">
 					<input type="hidden" name="tbl_logs" value="<?=$_POST['tbl_logs'] ?>">
 					<input type="hidden" name="tbl_reasons" value="<?=$_POST['tbl_reasons'] ?>">
-				
+
 					<label>Document Root</label>
 					<input class="input-xxlarge" type="text" name="doc_root" value="<? if (!isset($_POST['doc_root'])) { $docroot = str_replace('/admin/setup.php', '', $_SERVER['PHP_SELF']); echo $docroot; } else { print $_POST['doc_root']; } ?>" >
 					<label>Path root</label>
 					<input class="input-xxlarge" type="text" name="path_root" value="<? if (!isset($_POST['path_root'])) { $scriptrealpath = ereg_replace('\\\\','/', realpath('.'));$scriptrealpath = ereg_replace('/admin','', $scriptrealpath); echo $scriptrealpath; } else { print $_POST['path_root']; } ?>" >
-					
+
 					<? if ((isset($_POST['check']) && $_POST['check'] == 'check dirs') && ($path_root_is_dir != 1)) {
 						echo "&nbsp;<font color=\"#ff0000\">Directory does not exist or is invalid.</font>";
 					} ?>
-					
+
 					<label>Import dir</label>
 					<input class="input-xxlarge" type="text" name="dir_import" value="<? if (!isset($_POST['dir_import'])) {$scriptrealpath = ereg_replace('\\\\','/', realpath('.'));$scriptrealpath = ereg_replace('/admin','', $scriptrealpath); echo $scriptrealpath.'/tmp'; } else { print $_POST['dir_import']; } ?>" >
-					
+
 					<? if (( isset($_POST['check']) && $_POST['check'] == 'check dirs') && ($dir_import_is_dir != 1)) {
 						echo "&nbsp;<font color=\"#ff0000\">Directory does not exist or is invalid.</font>";
 					} ?>
-					
+
 					<label>Template dir</label>
 					<input class="input-xxlarge" type="text" name="dir_template" value="<? if (!isset($_POST['dir_template'])) { $scriptrealpath = ereg_replace('\\\\','/', realpath('.'));$scriptrealpath = ereg_replace('/admin','', $scriptrealpath); echo $scriptrealpath.'/templates'; } else { print $_POST['dir_template']; } ?>" >
-					
+
 					<? if ((isset($_POST['check']) && $_POST['check'] == 'check dirs') && ($dir_template_is_dir != 1)) {
 						echo "&nbsp;<font color=\"#ff0000\">Directory does not exist or is invalid.</font>";
 					} ?>
-	
+
 					<? if ((( isset($_POST['check']) && $_POST['check'] == 'check dirs') && ($checked_dirs == 1))) {
 							echo "<font color=\"#ff0000\">Please fill in all required fields.</font>";
 					} else {
@@ -507,7 +507,7 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 								echo "<font color=\"#00b266\">Directory information OK. Proceed.</font>";
 						}
 					} ?>
-					
+
 					<div class="clearfix"></div>
 					<? if (isset($checked_dirs) && $checked_dirs != 3) {
 						echo '<button class="btn btn-primary" type="submit" name="check" value="check dirs"><i class="icon-refresh icon-white"></i> Check Dir</button>';
@@ -516,9 +516,9 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 					} ?>
 
 			</form>
-			
+
 			<? } else if ((isset($action)) && ($action == 'step 4')) { ?>
-			
+
 				<h1>Step 4: Back-End Administrator</h1>
 				<p>
 					Create your admin-account here. This admin will be granted all privileges (level 1). You will be able to add more admins and levels at a later stage.
@@ -545,26 +545,26 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 					<input type="hidden" name="path_root" value="<?=$_POST['path_root'] ?>">
 					<input type="hidden" name="dir_import" value="<?=$_POST['dir_import'] ?>">
 					<input type="hidden" name="dir_template" value="<?=$_POST['dir_template'] ?>">
-				
+
 					<label>Nickname</label>
 					<input class="input-xlarge" type="text" name="admin_nick" value="<? if (!isset($_POST['admin_nick'])) { echo 'John Smith'; } else { print $_POST['admin_nick']; } ?>" >
 					<label>E-mail address</label>
 					<input class="input-xlarge" type="text" name="admin_email" value="<? if (!isset($_POST['admin_email'])) { echo 'email@example.com'; } else { print $_POST['admin_email']; } ?>" >
 					<label>Password</label>
 					<input class="input-xlarge" type="password" name="admin_pass" value="<?=isset($_POST['admin_pass']) ? $_POST['admin_pass'] : '' ?>" >
-			
+
 					<div class="clearfix"></div>
 					<? if (isset($empty_details) && $empty_details == 1){
 						echo "<font color=\"#ff0000\">Please fill in all required fields.</font>";
 					} ?>
 					<button class="btn btn-primary" type="submit" name="action" value="step 5"><i class="icon-ok icon-white"></i> Continue to step 4</button>
 				</form>
-			
+
 			<? } else if ((isset($action)) && ($action == 'step 5')) { ?>
-			
+
 				<h1>Step 5: AMXBans config items</h1>
-				
-				<p>			
+
+				<p>
 					Use included AMX admin manager
 				</p>
 				<p>
@@ -600,7 +600,7 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 				<p>
 					Here you can set how many bans are displayed per page.
 				</p>
-			
+
 				<form class="well" name="section" method="post" action="<?=$_SERVER['PHP_SELF'] ?>">
 					<input type="hidden" name="action" value="<?=$_POST['action'] ?>">
 					<input type="hidden" name="db_host" value="<?=$_POST['db_host'] ?>">
@@ -623,32 +623,32 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 					<input type="hidden" name="admin_nick" value="<?=$_POST['admin_nick'] ?>">
 					<input type="hidden" name="admin_email" value="<?=$_POST['admin_email'] ?>">
 					<input type="hidden" name="admin_pass" value="<?=$_POST['admin_pass'] ?>">
-			
+
 					<label>Use included AMX admin manager?</label>
 
-			
+
 					<select name="admin_management">
 						<option value="enabled" <? if ((isset($_POST['admin_management'])) && ($_POST['admin_management'] == 'enabled')) { echo 'selected'; } ?>>Enabled</option>
 						<option value="disabled" <? if ((isset($_POST['admin_management'])) && ($_POST['admin_management'] == 'disabled')) { echo 'selected'; } ?>>Disabled</option>
 					</select>
-			
+
 					<label>Use fancy layers?</label>
-			
+
 					<select name="fancy_layers">
 						<option value="enabled" <? if ((isset($_POST['fancy_layers'])) && ($_POST['fancy_layers'] == 'enabled')) { echo 'selected'; } ?>>Enabled</option>
 						<option value="disabled" <? if ((isset($_POST['fancy_layers'])) && ($_POST['fancy_layers'] == 'disabled')) { echo 'selected'; } ?>>Disabled</option>
 					</select>
-			
+
 					<label>Enable version-checking?</label>
-			
+
 					<select name="version_checking">
 						<option value="enabled" <? if ((isset($_POST['version_checking'])) && ($_POST['version_checking'] == 'enabled') || (!isset($_POST['version_checking']))) { echo 'selected'; } ?>>Enabled</option>
 						<option value="disabled" <? if ((isset($_POST['version_checking'])) && ($_POST['version_checking'] == 'disabled')) { echo 'selected'; } ?>>Disabled</option>
 					</select>
-			
+
 
 					<label>Hours between web server and game server.</label>
-			
+
 					<select name='timezone_fix'>
 						<option value="0" <? if ((isset($_POST['timezone_fix'])) && ($_POST['timezone_fix'] == "0"))  { echo 'selected'; } ?>>0</option>
 						<option value="1" <? if ((isset($_POST['timezone_fix'])) && ($_POST['timezone_fix'] == "1"))  { echo 'selected'; } ?>>+1</option>
@@ -676,44 +676,44 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 						<option value="-11" <? if ((isset($_POST['timezone_fix'])) && ($_POST['timezone_fix'] == "-11")) { echo 'selected'; } ?>>-11</option>
 						<option value="-12" <? if ((isset($_POST['timezone_fix'])) && ($_POST['timezone_fix'] == "-12")) { echo 'selected'; } ?>>-12</option>
 					</select>
-			
+
 					<label>Should public users be able to use search?</label>
-					
+
 					<select name="display_search">
 						<option value="enabled" <? if ((isset($_POST['display_search'])) && ($_POST['display_search'] == 'enabled')) { echo 'selected'; } ?>>Enabled</option>
 						<option value="disabled" <? if (((isset($_POST['display_search'])) && ($_POST['display_search'] == 'disabled'))) { echo 'selected'; } ?>>Disabled</option>
 					</select>
 
 					<label>Display admin nick for public users on front-page?</label>
-			
+
 					<select name="display_admin">
 						<option value="enabled" <? if ((isset($_POST['display_admin'])) && ($_POST['display_admin'] == 'enabled')) { echo 'selected'; } ?>>Enabled</option>
 						<option value="disabled" <? if (((isset($_POST['display_admin'])) && ($_POST['display_admin'] == 'disabled'))) { echo 'selected'; } ?>>Disabled</option>
 					</select>
-			
+
 					<label>Display reason on front-page?</label>
-			
+
 					<select name="display_reason">
 						<option value="enabled" <? if ((isset($_POST['display_reason'])) && ($_POST['display_reason'] == 'enabled')) { echo 'selected'; } ?>>Enabled</option>
 						<option value="disabled" <? if (((isset($_POST['display_reason'])) && ($_POST['display_reason'] == 'disabled'))) { echo 'selected'; } ?>>Disabled</option>
 					</select>
-			
+
 					<label>Use custom error handler?</label>
-			
+
 					<select name="error_handler">
 						<option value="enabled" <? if ((isset($_POST['error_handler'])) && ($_POST['error_handler'] == 'enabled')) { echo 'selected'; } ?>>Enabled</option>
 						<option value="disabled" <? if (((isset($_POST['error_handler'])) && ($_POST['error_handler'] == 'disabled')) || (!isset($_POST['error_handler']))) { echo 'selected'; } ?>>Disabled</option>
 					</select>
 					<span class="help-inline">Enable this feature if you want to receive emails when something goes wrong.</span>
-					
+
 					<label>Error Handler</label>
 					<input class="input-xxlarge" type="text" name="error_handler_path" value="<? if (!isset($_POST['error_handler_path'])) { print (isset($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : '').(isset($docroot) ? $docroot : '').'/include/error_handler.inc.php'; } else { print $_POST['error_handler_path']; } ?>" >
 					<? if ((isset($_POST['check']) && $_POST['check'] == 'check dirs') && ($path_root_is_dir != 1)) {
 						echo "&nbsp;<font color=\"#ff0000\">Directory does not exist or is invalid.</font>";
 					} ?>
-					
+
 					<label>Bans per page</label>
-			
+
 					<select name="bans_amount">
 						<option value="10" <? if ((isset($_POST['bans_amount'])) && ($_POST['bans_amount'] == '10')) { echo 'selected'; } ?>>10</option>
 						<option value="25" <? if ((isset($_POST['bans_amount'])) && ($_POST['bans_amount'] == '25')) { echo 'selected'; } ?>>25</option>
@@ -721,38 +721,38 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 						<option value="75" <? if ((isset($_POST['bans_amount'])) && ($_POST['bans_amount'] == '75')) { echo 'selected'; } ?>>75</option>
 						<option value="100" <? if ((isset($_POST['bans_amount'])) && ($_POST['bans_amount'] == '100')) { echo 'selected'; } ?>>100</option>
 					</select>
-			
+
 					<div class="clearfix"></div>
-			
-			
+
+
 				<? if ( isset($empty_details) && $empty_details == 1){
 					echo "<font color=\"#ff0000\">Please fill in all required fields.</font>";
 				} ?>
-			
+
 					<button class="btn btn-primary" type="submit" name="action" value="finalize">Finalize Settings</button>
 				</form>
 
-			
+
 			<? } else if ((isset($action)) && ($action == 'finalize')) { ?>
-			
+
 				<h1>Step 6: Create objects/tables</h1>
-				
+
 				<p>
-					Level 1 will be created and the admin you entered earlier will be assigned this level. The file config.inc.php will be created. If you are upgrading from a previous version, and you are getting 'failed' on creating the level and webadmin; this is caused by the fact that level 1 an the specified webadmin allready exists in the database. 
+					Level 1 will be created and the admin you entered earlier will be assigned this level. The file config.inc.php will be created. If you are upgrading from a previous version, and you are getting 'failed' on creating the level and webadmin; this is caused by the fact that level 1 an the specified webadmin allready exists in the database.
 				</p>
-			
+
 			<form class="well" name="section" method="post" action="<?=$_SERVER['PHP_SELF'] ?>">
-			<?			
+			<?
 				$config->document_root		= $_POST['doc_root'];
 				$config->path_root			= $_POST['path_root'];
 				$config->importdir			= $_POST['dir_import'];
 				$config->templatedir		= $_POST['dir_template'];
-			
+
 				$config->db_host			= $_POST['db_host'];
 				$config->db_name			= $_POST['db_name'];
 				$config->db_user			= $_POST['db_user'];
 				$config->db_pass			= $_POST['db_pass'];
-			
+
 				$config->bans				= $_POST['tbl_bans'];
 				$config->ban_history		= $_POST['tbl_banhistory'];
 				$config->webadmins			= $_POST['tbl_webadmins'];
@@ -762,56 +762,56 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 				$config->servers			= $_POST['tbl_servers'];
 				$config->logs				= $_POST['tbl_logs'];
 				$config->reasons			= $_POST['tbl_reasons'];
-			
+
 				$config->admin_nickname		= $_POST['admin_nick'];
 				$config->admin_email		= $_POST['admin_email'];
-			
+
 				$config->error_handler		= $_POST['error_handler'];
 				$config->error_handler_path	= $_POST['error_handler_path'];
-			
+
 				$config->admin_management	= $_POST['admin_management'];
-			
+
 				$config->fancy_layers		= $_POST['fancy_layers'];
-			
+
 				$config->version_checking	= $_POST['version_checking'];
-			
+
 				$config->bans_per_page		= $_POST['bans_amount'];
-			
+
 				$config->display_search 	= $_POST['display_search'];
-				
+
 				$config->timezone_fix 		= $_POST['timezone_fix'];
-				
+
 				$config->display_admin 		= $_POST['display_admin'];
-				
+
 				$config->display_reason		= $_POST['display_reason'];
-			
+
 				$config->disable_frontend	= "false";
 				$config->rcon_class 		= "two";
 				$config->geoip				= "enabled";
 				$config->autopermban_count 	= "disabled";
-			
+
 				$link			= @mysql_connect($config->db_host, $config->db_user, $config->db_pass);
 				$db_selected	= @mysql_select_db($config->db_name, $link);
 				$insert_level 	= @mysql_query("INSERT INTO $config->levels VALUES ('1', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes')");
 				$pass			= md5($_POST['admin_pass']);
 				$insert_admin 	= @mysql_query("INSERT INTO $config->webadmins (username, password, level) VALUES ('$config->admin_nickname', '$pass', '1')");
-				
+
 				$insert_level;
-				
+
 				if (!$insert_level) {
 					$insert_level_error = 1;
 				} else {
 					$insert_level_error = 0;
 				}
-			
+
 				if (!$insert_admin) {
 					$insert_admin_error = 1;
 				} else {
 					$insert_admin_error = 0;
 				}
-			
+
 			?>
-			
+
 				<label>Creating the default level</label>
 				<? if ($insert_level_error == 0) {
 					echo
@@ -841,76 +841,76 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 							Can\'t add \''.$_POST['admin_nick'].'\' as a root administrator. This can happen if you\'re upgrading. Double-check to be sure!
 						</div>';
 				} ?>
-			
+
 			<?
-			
-			
+
+
 				$security_fix = "
-			// fix text to display 
-			\$_POST = str_replace(\"\'\", \"\", \$_POST); 
-			\$_POST = str_replace(\"\\\"\", \"\", \$_POST); 
-			\$_POST = str_replace(\"\\\\\", \"\", \$_POST); 
-			
-			\$_GET = str_replace(\"\'\", \"\", \$_GET); 
-			\$_GET = str_replace(\"\\\"\", \"\", \$_GET); 
+			// fix text to display
+			\$_POST = str_replace(\"\'\", \"\", \$_POST);
+			\$_POST = str_replace(\"\\\"\", \"\", \$_POST);
+			\$_POST = str_replace(\"\\\\\", \"\", \$_POST);
+
+			\$_GET = str_replace(\"\'\", \"\", \$_GET);
+			\$_GET = str_replace(\"\\\"\", \"\", \$_GET);
 			\$_GET = str_replace(\"\\\\\", \"\", \$_GET);
 			";
-			
-			
+
+
 				$smarty_meuk = "
-			
+
 			/* Don't edit below this line */
 			\$config->update_url = \"http://www.amxbans.net\";
 			\$config->php_version = \"5.0\";
 			\$config->default_lang = \"english\";
-			
+
 			/* Smarty settings */
 			define(\"SMARTY_DIR\", \$config->path_root.\"/smarty/\");
-			
+
 			require(SMARTY_DIR.\"Smarty.class.php\");
-			
+
 			class dynamicPage extends Smarty {
 				function dynamicPage() {
-			
+
 					global \$config;
-			
+
 					\$this->Smarty();
-			
+
 					\$this->template_dir = \$config->templatedir;
 					\$this->compile_dir	= SMARTY_DIR.\"templates_c/\";
 					\$this->config_dir	= SMARTY_DIR.\"configs/\";
 					\$this->cache_dir	= SMARTY_DIR.\"cache/\";
 					\$this->caching		= FALSE;
-			
+
 					\$this->assign(\"app_name\",\"dynamicPage\");
 				}
 			}
-			
+
 			?>";
-			
+
 				$arr	= get_object_vars($config);
 				$fp	= fopen("$config->path_root/include/config.inc.php", "w");
-			
+
 				if (!fopen("$config->path_root/include/config.inc.php", "w")) {
 					$config_fail = 1;
 				} else {
 					$config_fail = 0;
 				}
-			
+
 				fwrite($fp, "<?php\n");
 				fwrite($fp, $security_fix);
-				
+
 				fwrite($fp, "\n\n");
-			
+
 				while (list($prop, $val) = each($arr)) {
 					fwrite($fp, "\$config->$prop = \"$val\";\n");
 				}
-			
+
 				fwrite($fp, $smarty_meuk);
 				fclose($fp);
-			
+
 			?>
-			
+
 				<label>Writing the config file</label>
 				<? if ($config_fail == 0) {
 					echo
@@ -925,27 +925,27 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 							Can\'t write the config file! Make sure you have properly set your user permissions.
 						</div>';
 				} ?>
-				
-				
+
+
 				<input type="hidden" name="action" value="<?=$_POST['action'] ?>">
 				<input type="hidden" name="doc_root" value="<?=$_POST['doc_root'] ?>">
 
 				<? if (isset($empty_details) && $empty_details == 1){
 					echo "<font color=\"#ff0000\">Please fill in all required fields.</font>";
 				} ?>
-			
+
 				<div class="clearfix"></div>
-			
+
 			      <button class="btn btn-primary" type="submit" name="action" value="go to frontpage">Go to frontpage</button>
 			  </form>
-			
+
 			<? } else { ?>
-			
+
 				<h1>Step 1: Adding your database information.</h1>
 				<p>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc tempus turpis ac lacus consectetur porttitor. Nullam sollicitudin lectus a quam laoreet suscipit ac vitae lorem. Sed adipiscing auctor quam at vestibulum. Mauris suscipit, sem sed cursus lacinia, eros sem condimentum quam, in gravida elit metus quis neque. Vestibulum convallis sapien in metus tempor id vehicula magna consectetur. Cras viverra auctor viverra. Integer placerat mi vitae nulla molestie vitae volutpat enim fermentum. Nullam viverra gravida sodales. Phasellus nec risus quis tellus gravida lacinia. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nam tempus euismod sem. Maecenas.
 				</p>
-			
+
 				<? if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 					if ($dblogin == 0) {
 						echo
@@ -977,7 +977,7 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 							</div>';
 					}
 				} ?>
-			
+
 				<form class="well" name="section" method="post" action="<?=$_SERVER['PHP_SELF'] ?>">
 					<label>Hostname</label>
 					<input type="text" name="db_host" value="<?= isset($_POST['db_host']) ? $_POST['db_host'] : "" ?>">
@@ -987,10 +987,10 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 					<input type="text" name="db_user" value="<?=isset($_POST['db_host']) ? $_POST['db_user'] : "" ?>">
 					<label>Password</label>
 					<input type="password" name="db_pass" value="<?=isset($_POST['db_host']) ? $_POST['db_pass'] : "" ?>">
-					
+
 					<div class="clearfix"></div>
 
-			
+
 					<? if ((!isset($dblogin)) || ($dblogin != 3)) {
 						echo '<button class="btn btn-info" type="submit" name="check" value="check connection"><i class="icon-refresh icon-white"></i> Check Connection</button>';
 					}
@@ -999,7 +999,7 @@ if ((isset($_POST['check'])) && ($_POST['check'] == 'check connection')) {
 					} ?>
 				</form>
 			<? } ?>
-			
+
 		</div>
 	</body>
 
