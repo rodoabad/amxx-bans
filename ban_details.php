@@ -19,7 +19,6 @@ if ($config->geoip == "enabled") {
 require("$config->path_root/include/functions.lang.php");
 require("$config->path_root/include/functions.inc.php");
 
-
 // Get ban details
 if((isset($_GET['bid']) && is_numeric($_GET['bid'])) || (isset($_GET['bhid']) && is_numeric($_GET['bhid']))) {
 	if(isset($_GET['bid'])) {
@@ -107,6 +106,19 @@ if((isset($_GET['bid']) && is_numeric($_GET['bid'])) || (isset($_GET['bhid']) &&
 			$server_name = lang("_WEBSITE");
 		}
 
+
+        if ($server_ip != "") {
+            // Get the gametype for each ban
+            $resource3  = mysql_query("SELECT gametype FROM $config->servers WHERE address = '$server_ip'") or die(mysql_error());
+            while($result3 = mysql_fetch_object($resource3)) {
+                $gametype = $result3->gametype;
+            }
+        } else {
+            $gametype = "html";
+        }
+
+        $gametype = convertGameType($gametype);
+
 		if(isset($_GET["bid"])) {
 			$id_type = "bid";
 			$id = $_GET["bid"];
@@ -135,6 +147,7 @@ if((isset($_GET['bid']) && is_numeric($_GET['bid'])) || (isset($_GET['bhid']) &&
         }
 
 		$ban_info = array(
+            "gametype" => $gametype,
 			"id_type"	=> $id_type,
 			"bid"		=> $id,
 			"player_name"	=> $player_name,
@@ -175,7 +188,7 @@ if((isset($_GET['bid']) && is_numeric($_GET['bid'])) || (isset($_GET['bhid']) &&
             //$history_octet = $octets[0] . '.' . $octets[1] . '.' . $octets[2] . '.';
             $history_octet = $octets[0] . '.' . $octets[1] . '.';
 			//$query = "SELECT * FROM $config->ban_history WHERE player_ip = '".$result->player_ip."' ORDER BY ban_created DESC";
-			$query = "SELECT * FROM $config->bans WHERE player_ip LIKE '%".$history_octet."%' ORDER BY ban_created DESC";
+			$query = "SELECT * FROM $config->bans WHERE player_ip LIKE '".$history_octet."%' ORDER BY ban_created DESC";
 		}
 		else // Search for IP bans
 		{

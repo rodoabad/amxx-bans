@@ -3,85 +3,101 @@
 $db_connect = @mysql_connect($config->db_host, $config->db_user, $config->db_pass) or die (mysql_error());
 $db_site    = @mysql_select_db($config->db_name, $db_connect) or die (mysql_error());
 
+function convertGameType($sGameType) {
+
+    $aGames = array(
+        'cstrike' => 'Counter-Strike 1.6',
+        'czero' => 'Condition Zero',
+    );
+
+    foreach ($aGames as $sGameKey => $sGameValue) {
+        if ($sGameKey == $sGameType) {
+            return $sGameValue;
+        }
+    }
+}
+
+// OLD
+
 function dateFull($timestamp) { // zondag 20 april 2003
 	setlocale (LC_TIME, 'Dutch');
 	$date = strftime("%A %d %B %Y", $timestamp);
-	
+
 	return $date;
 }
 
 function dateShort($timestamp) { // 20-04-03
 	setlocale (LC_TIME, 'Dutch');
 	$date = strftime("%d-%m-%y", $timestamp);
-	
+
 	return $date;
 }
 
 function dateMonth($timestamp) { // 20/04
 	setlocale (LC_TIME, 'Dutch');
 	$date = strftime("%d/%m", $timestamp);
-	
+
 	return $date;
 }
 
 function dateShortYear($timestamp) { // 20-04-2003
 	setlocale (LC_TIME, 'Dutch');
 	$date = strftime("%d-%m-%Y", $timestamp);
-	
+
 	return $date;
 }
 
 function dateMonthYear($timestamp) { // maart 2004
 	setlocale (LC_TIME, 'Dutch');
 	$date = strftime("%B %Y", $timestamp);
-	
+
 	return $date;
 }
 
 function dateFulltime($timestamp) { // zondag 20 april 2003 - 15:32
 	setlocale (LC_TIME, 'Dutch');
 	$date = strftime("%A %d %B %Y - %H:%M", $timestamp);
-	
+
 	return $date;
 }
 
 function dateShorttime($timestamp) { // 20-04-03 15:32
 	setlocale (LC_TIME, 'Dutch');
 	$date = strftime("%B %d, %Y - %I:%M %p", $timestamp);
-	
+
 	return $date;
 }
 
 function dateRFC822($timestamp) { // Sat, 28 Jun 2003 18:06:03 GMT
 	$timestamp = $timestamp - 7200;
-	
+
 	$date = strftime("%a, %d %b %Y %H:%M:%S GMT", $timestamp);
-	
+
 	return $date;
 }
 
 function firstDayOfWeek($timestamp = NULL) { // Return a UNIX timestamp of the first day in a week
 	global $currenttime;
-	
+
 	if(isset($timestamp)) {
 		$year = strftime("%Y",$timestamp);
 		$week_number = strftime("%W",$timestamp);
 	}
-	
+
 	else {
 		$year = strftime("%Y",$currenttime);
 		$week_number = strftime("%W",$currenttime);
 	}
-	
-	// Numeric day of the week for the 1st of January, $year 
-	$no = date("w", mktime(0,0,0,1,1,$year)); 
-	
-	// First day of first week in $year 
-	$first_day = mktime(0,0,0,1,1,$year) - ($no-1) * 86400; 
-	
-	// Add $week weeks to first day (current week is not to be added) 
+
+	// Numeric day of the week for the 1st of January, $year
+	$no = date("w", mktime(0,0,0,1,1,$year));
+
+	// First day of first week in $year
+	$first_day = mktime(0,0,0,1,1,$year) - ($no-1) * 86400;
+
+	// Add $week weeks to first day (current week is not to be added)
 	$add_no_of_weeks = $week_number;
-	
+
 	return strtotime("$add_no_of_weeks weeks", $first_day);
 }
 
@@ -89,11 +105,11 @@ function checkLeapYear($year) {
 	if($year % 4 != 0) {
 		return FALSE;
 	}
-	
+
 	elseif(($year % 100 != 0) || ($year % 400 == 0)) {
 		return TRUE;
 	}
-	
+
 	else {
 		return FALSE;
 	}
@@ -101,16 +117,16 @@ function checkLeapYear($year) {
 
 function timing($command) {
 	global $starttime, $endtime;
-	
+
 	if($command == 'start') {
-		$mtime1 = microtime(); 
+		$mtime1 = microtime();
 		$mtime1 = explode(" ",$mtime1);
 		$mtime1 = $mtime1[1] + $mtime1[0];
 		$starttime = $mtime1;
 	}
-	
+
 	else if($command == 'end') {
-		$mtime2 = microtime();		
+		$mtime2 = microtime();
 		$mtime2 = explode(" ",$mtime2);
 		$mtime2 = $mtime2[1] + $mtime2[0];
 		$endtime = $mtime2;
@@ -147,45 +163,45 @@ function timeleft($begin,$end) {
 	if($years == 1) {
 		$s.= $years."&nbsp;".lang("_YEAR")."&nbsp;";
 	}
-	
+
 	elseif($years > 1) {
 		$s.= $years."&nbsp;".lang("_YEARS")."&nbsp;";
 	}
-	
+
 	if($months == 1) {
 		$s.= $months."&nbsp;".lang("_MONTH")."&nbsp;";
 	}
-	
+
 	elseif($months > 1) {
 		$s.= $months."&nbsp;".lang("_MONTHS")."&nbsp;";
 	}
-	
+
 	if($weeks == 1) {
 		$s.= $weeks."&nbsp;".lang("_WEEK")."&nbsp;";
 	}
-	
+
 	elseif($weeks > 1) {
 		$s.= $weeks."&nbsp;".lang("_WEEKS")."&nbsp;";
 	}
-	
+
 	if($days == 1) {
 		$s.= $days."&nbsp;".lang("_DAY")."&nbsp;";
 	} else if($days > 1) {
 		$s.= $days."&nbsp;".lang("_DAYS")."&nbsp;";
 	}
-	
+
 	if($hours == 1) {
 		$s.= $hours."&nbsp;".lang("_HOUR")."&nbsp;";
 	} else if($hours > 1) {
 		$s.= $hours."&nbsp;".lang("_HOURS")."&nbsp;";
 	}
-	
+
 	if($minutes == 1) {
 		$s.= $minutes."&nbsp;".lang("_MIN");
 	} else if($minutes > 1) {
 		$s.= $minutes."&nbsp;".lang("_MINS");
 	}
-	
+
 	return $s;
 }
 
@@ -209,13 +225,13 @@ function GetUrlParams($exclude=false) {
 		}
 		$get_params.=($k!=$exclude)?'&'.$k.'='.$v:'';
 	}
-	
+
 	if ( isset($get_params) )
 	{
 		$get_params = str_replace($get_params_excluded, '', $get_params);
-		if(!empty($get_params)) 
+		if(!empty($get_params))
 			$get_params='?'.substr($get_params, 1);
-		else 
+		else
 			$get_params='?';
 
 		return $get_params;
@@ -251,7 +267,7 @@ function CheckFrontEndState() {
 		} else {
 			header( "Location:$config->document_root/unavailable.php?msg=frontend_disabled" );
 		}
-	} 
+	}
 }
 
 function GenerateString($strlen) {
@@ -323,43 +339,43 @@ function AddImportBan($player_id,$player_nick,$admin_nick,$admin_ip,$ban_type,$b
 	}
 }
 
-function display_post_get() { 
-   if ($_POST) { 
-      echo "Displaying POST Variables: <br> \n"; 
-      echo "<table border=1> \n"; 
-      echo " <tr> \n"; 
-      echo "  <td><b>result_name </b></td> \n "; 
-      echo "  <td><b>result_val  </b></td> \n "; 
-      echo " </tr> \n"; 
-      while (list($result_nme, $result_val) = each($_POST)) { 
-         echo " <tr> \n"; 
-         echo "  <td> $result_nme </td> \n"; 
-         echo "  <td> $result_val </td> \n"; 
-         echo " </tr> \n"; 
-      } 
-      echo "</table> \n"; 
-   } 
-   if ($_GET) { 
-      echo "Displaying GET Variables: <br> \n"; 
-      echo "<table border=1> \n"; 
-      echo " <tr> \n"; 
-      echo "  <td><b>result_name </b></td> \n "; 
-      echo "  <td><b>result_val  </b></td> \n "; 
-      echo " </tr> \n"; 
-      while (list($result_nme, $result_val) = each($_GET)) { 
-         echo " <tr> \n"; 
-         echo "  <td> $result_nme </td> \n"; 
-         echo "  <td> $result_val </td> \n"; 
-         echo " </tr> \n"; 
-      } 
-      echo "</table> \n"; 
-   } 
+function display_post_get() {
+   if ($_POST) {
+      echo "Displaying POST Variables: <br> \n";
+      echo "<table border=1> \n";
+      echo " <tr> \n";
+      echo "  <td><b>result_name </b></td> \n ";
+      echo "  <td><b>result_val  </b></td> \n ";
+      echo " </tr> \n";
+      while (list($result_nme, $result_val) = each($_POST)) {
+         echo " <tr> \n";
+         echo "  <td> $result_nme </td> \n";
+         echo "  <td> $result_val </td> \n";
+         echo " </tr> \n";
+      }
+      echo "</table> \n";
+   }
+   if ($_GET) {
+      echo "Displaying GET Variables: <br> \n";
+      echo "<table border=1> \n";
+      echo " <tr> \n";
+      echo "  <td><b>result_name </b></td> \n ";
+      echo "  <td><b>result_val  </b></td> \n ";
+      echo " </tr> \n";
+      while (list($result_nme, $result_val) = each($_GET)) {
+         echo " <tr> \n";
+         echo "  <td> $result_nme </td> \n";
+         echo "  <td> $result_val </td> \n";
+         echo " </tr> \n";
+      }
+      echo "</table> \n";
+   }
 }
 
-function display_array($array) { 
-	echo "<pre>\n"; 
+function display_array($array) {
+	echo "<pre>\n";
 	print_r($array);
-	echo "</pre>\n"; 
+	echo "</pre>\n";
 }
 
 function ReadSessionFromCookie() {
@@ -388,7 +404,7 @@ function ReadSessionFromCookie() {
 	$ip_view		= $cook[19];
 
 	$sql = mysql_query("SELECT * FROM $config->webadmins WHERE username = '$uid' AND password = '$pwd'") or die (mysql_error());
-  
+
 	if (mysql_num_rows($sql) == 0) {
   	unset($_SESSION['uid']);
   	unset($_SESSION['pwd']);
@@ -415,7 +431,7 @@ function ReadSessionFromCookie() {
 
 	$_SESSION['uid'] = $uid;
 	$_SESSION['pwd'] = $pwd;
-	$_SESSION['uip'] = $uip;	
+	$_SESSION['uip'] = $uip;
 	$_SESSION['lvl'] = $lvl;
 	$_SESSION['userid'] = $userid;
 	$_SESSION['bans_add'] = $bans_add;
@@ -437,7 +453,7 @@ function ReadSessionFromCookie() {
 function CountBans() {
 
 	global $config;
-	
+
 	$active_bans	= mysql_query("SELECT COUNT(bid) AS active_bans FROM $config->bans") or die(mysql_error());
 	$result		= mysql_fetch_object($active_bans);
 

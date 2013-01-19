@@ -116,9 +116,21 @@
             </td>
         </tr>
         <tr>
-            <th>{'_BANON'|lang}</th>
+            <th>Game</th>
             <td>
-                {$ban_info.server_name} ({$ban_info.server_ip})
+                {$ban_info.gametype}
+            </td>
+        </tr>
+        <tr>
+            <th>Server Name</th>
+            <td>
+                {$ban_info.server_name}
+            </td>
+        </tr>
+        <tr>
+            <th>Server Address</th>
+            <td>
+                {$ban_info.server_ip}
             </td>
         </tr>
         <tr>
@@ -160,7 +172,7 @@
         <thead>
             <tr>
                 <!-- <th>{"_BANHISTORY"|lang}</th> -->
-                <th>Related Bans</th>
+                <th colspan="6">Related Bans (Found {$bhans|@count} Matches)</th>
             </tr>
         </thead>
         <tbody>
