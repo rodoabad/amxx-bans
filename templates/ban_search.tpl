@@ -13,7 +13,7 @@
                 <option value="datebanned">Date Banned</option>
                 <option value="bancount">Ban Count</option>
                 <option value="admin">Admin</option>
-                <option value="server">Server</option>                    
+                <option value="server">Server</option>
             </select>
             <button class="btn btn-primary" type="submit">{'_SEARCH'|lang}</button>
         </div>
@@ -32,11 +32,11 @@
             	{if $display_reason == "enabled"}
 	                <th>{'_REASON'|lang}</th>
             	{/if}
-            	
+
             	<th>Server</th>
-            	<!-- <th>Options</th> -->            
+            	<!-- <th>Options</th> -->
 			</tr>
-          	
+
           	{foreach from=$bans item=bans}
           		<tr>
           		    <td>
@@ -50,13 +50,13 @@
             		<td class="hidden-phone"><span class="label label-info">{$bans.gametype}</span></td>
             		<td>{$bans.date}</td>
             		<td>
-            		  <a href="{$dir}/ban_details.php?bid={$bans.bid}"><i class="icon-user"></i></a> {$bans.player}
+            		  <a href="{$dir}/ban.php?bid={$bans.bid}"><i class="icon-user"></i></a> {$bans.player}
             		</td>
             		<td>{if $display_admin == "enabled" || ($smarty.session.bans_add == "yes")}{$bans.adminnick}{else}{"_HIDDEN"|lang}{/if}</td>
            			{if $display_reason == "enabled"}
            				<td>{$bans.reason}</td>
            			{/if}
-            		
+
             		<td>{$bans.servername} ({$bans.gametype})</td>
           			<!--
           			<td>
@@ -89,7 +89,7 @@
 		</table>
 
 		<h3>{'_EXPIREDBANS'|lang}</h3>
-		
+
 		<table>
 		    <tr>
 	            <td height='16' width='2%'  class='listtable_top'>&nbsp;</td>
@@ -100,19 +100,19 @@
 	            <td height='16' width='16%' class='listtable_top'><b>{"_LENGHT"|lang}</b></td>
 	            <td height='16' width='2%' class='listtable_top'>&nbsp;</td>
 	    	</tr>
-          
-    
+
+
    {foreach from=$exbans item=exbans}
-          
-          
-         <tr bgcolor="#D3D8DC" style="CURSOR:hand;" onClick="document.location = '{$dir}/ban_details.php?bhid={$exbans.bhid}';" onMouseOver="this.style.backgroundColor='#C7CCD2'" onMouseOut="this.style.backgroundColor='#D3D8DC'">
+
+
+         <tr bgcolor="#D3D8DC" style="CURSOR:hand;" onClick="document.location = '{$dir}/ban.php?bhid={$exbans.bhid}';" onMouseOver="this.style.backgroundColor='#C7CCD2'" onMouseOut="this.style.backgroundColor='#D3D8DC'">
             <td height='16' width='2%'  class='listtable_1' align='center'><img src='{$dir}/images/{$exbans.ex_gametype}.gif'></td>
             <td height='16' width='{if $display_reason == "enabled"}10%{else}15%{/if}%' class='listtable_1'>{$exbans.ex_date}</td>
             <td height='16' width='{if $display_reason == "enabled"}23%{else}33%{/if}' class='listtable_1'>{$exbans.ex_player}</td>
             <td height='16' width='{if $display_reason == "enabled"}20%{else}30%{/if}' class='listtable_1'>{if $display_admin == "enabled" || ($smarty.session.bans_add == "yes")}{$exbans.ex_admin}{else}<i><font color='#677882'>{"_HIDDEN"|lang}</font></i>{/if}</td>
             {if $display_reason == "enabled"}<td height='16' width='25%' class='listtable_1'>{$exbans.ex_reason}</td>{/if}
             <td height='16' width='16%' class='listtable_1'>{$exbans.ex_duration}</td>
-            
+
             <td height='16' width='2%' class='listtable_1'>
                 <table width='100%' border='0' cellpadding='0' cellspacing='0'>
             <tr>

@@ -31,7 +31,7 @@
     <div id="access-levels" class="tab-pane {if $subsection == 'levels'}active{/if}">
         <table class="table table-bordered">
             <thead>
-            
+
             <tr>
                 <th></th>
                 <th colspan="6">Ban Access</th>
@@ -108,7 +108,7 @@
                                 <option value="{$available_levels}">{$available_levels}</option>
                             {/foreach}
                         </select>
-                
+
                         <button class="btn" type="submit" name="action" value="{'_ADD'|lang}">{'_ADDLEVEL'|lang}</button>
                     </td>
                 </tr>
@@ -124,7 +124,7 @@
                         {/foreach}
                     </select>
                     <button class="btn" type="submit" name="action" value="{'_REMOVE'|lang}">{'_REMOVELEVEL'|lang} </button>
-                        
+
                     </td>
                 </tr>
                 <tr>
@@ -173,7 +173,7 @@
                     </tr>
                 </form>
             {/foreach}
-        
+
             {* if $action == lang("_ADDWEBADMINS") *}
             <form name='admins' method='get' action='{$this}'>
                 <tr>
@@ -183,7 +183,7 @@
                         <input type='text' name="username">
                     </td>
                     <td>
-                        <input type="password" name="password" placeholder="Password">
+                        <input type="text" name="password" placeholder="Password">
                     </td>
                     <td>
                         {assign var=temp value=$webadmin.existing_lvls}
@@ -248,7 +248,7 @@
                         <input class="input-mini" type='text' name='flags' value='{$amxadmin.flags}'>
                     </td>
                     <!-- <td><input type='text' name='steamid' value='{$amxadmin.steamid}'></td> -->
-                    
+
                     <td>
                         <button class="btn btn-warning" type="submit" name="action" value="{'_APPLY'|lang}">{'_APPLY'|lang}</button>
                         <button class="btn btn-danger" type="submit" name="action" value="{'_REMOVE'|lang}">{'_REMOVE'|lang}</button

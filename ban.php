@@ -46,7 +46,6 @@ if((isset($_GET['bid']) && is_numeric($_GET['bid'])) || (isset($_GET['bhid']) &&
 		}
 
 		// Prepare all the variables
-		//$player_name = htmlentities($result->player_nick, ENT_QUOTES);
 		$player_name = htmlentities($result->player_nick, ENT_QUOTES);
 
 		if(!empty($result->player_ip)) {
@@ -63,7 +62,7 @@ if((isset($_GET['bid']) && is_numeric($_GET['bid'])) || (isset($_GET['bhid']) &&
 		}
 
 		$timezone = $config->timezone_fix * 3600;
-		$ban_start = dateShorttime($result->ban_created + $timezone);
+		$ban_start = formatTime($result->ban_created + $timezone);
 
 		if(empty($result->ban_length) OR $result->ban_length == 0) {
 			$ban_duration = lang("_PERMANENT");
@@ -199,7 +198,7 @@ if((isset($_GET['bid']) && is_numeric($_GET['bid'])) || (isset($_GET['bhid']) &&
 		$unban_array = array();
 		while($result = mysql_fetch_object($resource)) {
 			$bid = $result->bid;
-			$date = dateRFC822($result->ban_created);
+			$date = formatTime($result->ban_created);
 			$player = htmlentities($result->player_nick, ENT_QUOTES);
             $player_id = $result->player_id;
             $player_ip = $result->player_ip;
@@ -260,6 +259,6 @@ $smarty->assign("bhans", isset($unban_array) ? $unban_array : "");
 $smarty->assign("parsetime", isset($parsetime) ? $parsetime : "");
 
 $smarty->display('main_header.tpl');
-$smarty->display('ban_details.tpl');
+$smarty->display('ban.tpl');
 $smarty->display('main_footer.tpl');
 ?>

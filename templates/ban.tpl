@@ -31,7 +31,7 @@
   <li>Home <span class="divider">/</span></li>
   <li>Bans <span class="divider">/</span></li>
   <li>{'_BANDETAILS'|lang} <span class="divider">/</span></li>
-  <li class="active"><a href="{$dir}/ban_details.php?bid={$ban_info.bid}">{$ban_info.player_id}</a></li>
+  <li class="active"><a href="{$dir}/ban.php?bid={$ban_info.bid}">{$ban_info.player_id}</a></li>
 </ul>
 
     <div class="page-header">
@@ -44,31 +44,19 @@
         </div>
     </div>
 
-    <div>
+    <div class="pull-right">
         {if $ban_info.id_type == "bid"}
             {if (($smarty.session.bans_edit == "yes") || (($smarty.session.bans_edit == "own") && ($smarty.session.uid == $bans.webadmin)))}
-                <form name="delete" method="get" action="{$dir}/admin/edit_ban.php">
-                    <input type='hidden' name='action' value='edit'>
-                    <input type='hidden' name='bid' value='{$ban_info.bid}'>
-                    <button class="btn btn-block" type="submit">{'_EDIT'|lang}</button>
-                </form>
+                <a href="{$dir}/admin/edit_ban.php?action=edit&bid={$ban_info.bid}" title="{'_EDIT'|lang}"><i class="icon-edit"></i></a>
             {/if}
             {if (($smarty.session.bans_unban == "yes") || (($smarty.session.bans_unban == "own") && ($smarty.session.uid == $bans.webadmin)))}
-                <form name="unban" method="get" action="{$dir}/admin/edit_ban.php">
-                    <input type='hidden' name='action' value='unban'>
-                    <input type='hidden' name='bid' value='{$ban_info.bid}'>
-                    <button class="btn btn-warning btn-block" type="submit">{'_UNBAN'|lang}</button>
-                </form>
+                <a href="{$dir}/admin/edit_ban.php?action=unban&bid={$ban_info.bid}" title="{'_UNBAN'|lang}"><i class="icon-flag"></i></a>
             {/if}
             {if (($smarty.session.bans_delete == "yes") || (($smarty.session.bans_delete == "own") && ($smarty.session.uid == $bans.webadmin)))}
-                    <form name="unban" method="get" action="{$dir}/admin/edit_ban.php">
-                        <input type='hidden' name='action' value='delete'>
-                        <input type='hidden' name='bid' value='{$ban_info.bid}'>
-                        <button class="btn btn-danger btn-block" type="submit" onclick="javascript:return confirm('{"_WANTTOREMOVE"|lang} ban_id {$ban_info.bid}?')">{'_DELETE'|lang}</button>
-                    </form>
+                <a href="{$dir}/admin/edit_ban.php?action=delete&bid={$ban_info.bid}" title="{'_DELETE'|lang}" onclick="javascript:return confirm('{"_WANTTOREMOVE"|lang} ban_id {$ban_info.bid}?')"><i class="icon-trash"></i></a>
             {/if}
         {/if}
-</div>
+    </div>
 
 
 <table class="table table-bordered">
@@ -180,7 +168,7 @@
                 {if $bhans.player_id != $ban_info.player_id}
                 <tr>
                     <td>{$bhans.date}</td>
-                    <td><a href="{$dir}/ban_details.php?bid={$bhans.bid}">{$bhans.player}</a></td>
+                    <td><a href="{$dir}/ban.php?bid={$bhans.bid}">{$bhans.player}</a></td>
                     <!-- <td>{if ($display_admin == "enabled") || ($smarty.session.bans_add == "yes")}{$bhans.admin}{else}<i><font color='#677882'>{"_HIDDEN"|lang}</font></i>{/if}</td> -->
                     <td>{$bhans.player_id}</td>
                     <td>{$bhans.player_ip}</td>

@@ -17,6 +17,12 @@ function convertGameType($sGameType) {
     }
 }
 
+function formatTime($iTime) {
+    $sDate = strftime('%B %e, %Y - %l:%M %p', $iTime);
+
+    return $sDate;
+}
+
 // OLD
 
 function dateFull($timestamp) { // zondag 20 april 2003

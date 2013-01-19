@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 {php}
     CheckFrontEndState();
 
@@ -6,6 +5,8 @@
         ReadSessionFromCookie();
     }
 {/php}
+
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <title>{$title}</title>

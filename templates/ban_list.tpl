@@ -63,7 +63,7 @@
                     {/if}
                 {/if}
                 -->
-                <a href="{$dir}/ban_details.php?bid={$bans.bid}"><i class="icon-user"></i></a> {$bans.player}
+                <a href="{$dir}/ban.php?bid={$bans.bid}"><i class="icon-user"></i></a> {$bans.player}
             </td>
             <td>{$bans.player_id}</td>
             <td class="hidden-phone">
@@ -79,7 +79,7 @@
 
             <td>
                 <button id="ban-details-button-{$bans.bid}" class="btn btn-small hidden-phone">Details</button>
-                <a class="btn btn-small visible-phone" href="{$dir}/ban_details.php?bid={$bans.bid}">Details</a>
+                <a class="btn btn-small visible-phone" href="{$dir}/ban.php?bid={$bans.bid}">Details</a>
                 <div id="ban-details-{$bans.bid}" class="modal hide fade">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -178,7 +178,7 @@
                             </form>
                         {/if}
                         -->
-                        <a href="{$dir}/ban_details.php?bid={$bans.bid}">
+                        <a href="{$dir}/ban.php?bid={$bans.bid}">
                             <button class="btn btn-info">{'_BANPAGE'|lang}</button>
                         </a>
                         <a href="javascript:void(0)" class="btn">Close</a>
