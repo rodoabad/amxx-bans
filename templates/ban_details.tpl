@@ -43,25 +43,25 @@
             <div id="map-canvas" style="margin-bottom: 20px"></div>
         </div>
     </div>
-<!--
-    <div display:none>
+
+    <div>
         {if $ban_info.id_type == "bid"}
             {if (($smarty.session.bans_edit == "yes") || (($smarty.session.bans_edit == "own") && ($smarty.session.uid == $bans.webadmin)))}
-                <form name="delete" method="post" action="{$dir}/admin/edit_ban.php">
+                <form name="delete" method="get" action="{$dir}/admin/edit_ban.php">
                     <input type='hidden' name='action' value='edit'>
                     <input type='hidden' name='bid' value='{$ban_info.bid}'>
                     <button class="btn btn-block" type="submit">{'_EDIT'|lang}</button>
                 </form>
             {/if}
             {if (($smarty.session.bans_unban == "yes") || (($smarty.session.bans_unban == "own") && ($smarty.session.uid == $bans.webadmin)))}
-                <form name="unban" method="post" action="{$dir}/admin/edit_ban.php">
+                <form name="unban" method="get" action="{$dir}/admin/edit_ban.php">
                     <input type='hidden' name='action' value='unban'>
                     <input type='hidden' name='bid' value='{$ban_info.bid}'>
                     <button class="btn btn-warning btn-block" type="submit">{'_UNBAN'|lang}</button>
                 </form>
             {/if}
             {if (($smarty.session.bans_delete == "yes") || (($smarty.session.bans_delete == "own") && ($smarty.session.uid == $bans.webadmin)))}
-                    <form name="unban" method="post" action="{$dir}/admin/edit_ban.php">
+                    <form name="unban" method="get" action="{$dir}/admin/edit_ban.php">
                         <input type='hidden' name='action' value='delete'>
                         <input type='hidden' name='bid' value='{$ban_info.bid}'>
                         <button class="btn btn-danger btn-block" type="submit" onclick="javascript:return confirm('{"_WANTTOREMOVE"|lang} ban_id {$ban_info.bid}?')">{'_DELETE'|lang}</button>
@@ -69,7 +69,7 @@
             {/if}
         {/if}
 </div>
--->
+
 
 <table class="table table-bordered">
     <tbody>
@@ -185,8 +185,6 @@
                     <td>{$bhans.player_id}</td>
                     <td>{$bhans.player_ip}</td>
                     {if $display_reason == "enabled"}<td>{$bhans.reason}</td>{/if}
-                    <td>{$bhans.duration}</td>
-
                     <!--
                     <td height='16' width='4%' class='listtable_1'>
                         <table width='100%' border='0' cellpadding='0' cellspacing='0'>
@@ -200,7 +198,7 @@
                 			</tr>
                         </table>
                     </td>
-                -->
+                    -->
                 </tr>
                 {/if}
             {foreachelse}

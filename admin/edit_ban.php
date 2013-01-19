@@ -20,22 +20,22 @@ if(($_SESSION['bans_delete'] != "yes" ) && ($_SESSION['bans_delete'] != "own" ) 
 
 $ban_end = "";
 
-if (isset($_POST['action'])) {
+if (isset($_GET['action'])) {
 
-	if ($_POST['action'] == "delete") {
+	if ($_GET['action'] == "delete") {
 		$now 	  = date("U");
-		$resource = mysql_query("DELETE FROM $config->bans WHERE bid = '".$_POST['bid']."'") or die(mysql_error());
-		$add_log  = mysql_query("INSERT INTO $config->logs (timestamp, ip, username, action, remarks) VALUES ('$now', '".$_SERVER['REMOTE_ADDR']."', '".$_SESSION['uid']."', 'delete ban', 'Ban with BanID ".$_POST['bid']." deleted')") or die (mysql_error());
+		$resource = mysql_query("DELETE FROM $config->bans WHERE bid = '".$_GET['bid']."'") or die(mysql_error());
+		$add_log  = mysql_query("INSERT INTO $config->logs (timestamp, ip, username, action, remarks) VALUES ('$now', '".$_SERVER['REMOTE_ADDR']."', '".$_SESSION['uid']."', 'delete ban', 'Ban with BanID ".$_GET['bid']." deleted')") or die (mysql_error());
 		$url	  = "$config->document_root";
 		$delay	  = "0";
-		//echo "Deleted bid ".$_POST['bid'].". Redirecting...";
+		//echo "Deleted bid ".$_GET['bid'].". Redirecting...";
 		echo "<meta http-equiv=\"refresh\" content=\"".$delay.";url='http://".$_SERVER["HTTP_HOST"]."$url'\">";
 		exit();
-	} else if ($_POST['action'] == "unban") {
+	} else if ($_GET['action'] == "unban") {
 
 		// Get ban details
-		if(isset($_POST['bid']) && is_numeric($_POST['bid'])) {
-			$resource = mysql_query("SELECT * FROM $config->bans WHERE bid = '".mysql_escape_string($_POST["bid"])."'") or die(mysql_error());
+		if(isset($_GET['bid']) && is_numeric($_GET['bid'])) {
+			$resource = mysql_query("SELECT * FROM $config->bans WHERE bid = '".mysql_escape_string($_GET["bid"])."'") or die(mysql_error());
 
 			if(mysql_num_rows($resource) == 0) {
 				trigger_error("Can't find ban with given ID.", E_USER_NOTICE);
@@ -44,16 +44,16 @@ if (isset($_POST['action'])) {
 
 				// Get the AMX username of the admin if the ban was invoked from inside the server
 				if($result->server_name <> "website") {
-					$query2		= "SELECT nickname FROM $config->amxadmins WHERE steamid = '".$result->admin_id."'";	
-					$resource2	= mysql_query($query2) or die(mysql_error());	
+					$query2		= "SELECT nickname FROM $config->amxadmins WHERE steamid = '".$result->admin_id."'";
+					$resource2	= mysql_query($query2) or die(mysql_error());
 					$result2	= mysql_fetch_object($resource2);
 					$admin_amxname	= htmlentities($result2 ? $result2->nickname : "", ENT_QUOTES);
 				}
-	
+
 				// Prepare all the variables
 				$player_name	= htmlentities($result->player_nick, ENT_QUOTES) ;
 				$player_id	= htmlentities($result->player_id, ENT_QUOTES);
-		
+
 				/*if(!empty($result->player_ip)) {
 					if(isset($_SESSION["user_authenticated"]) && $_SESSION["user_authenticated"] == "TRUE" && $_SESSION["user_level"] == "OWNER" || $_SESSION["user_level"] == "ADMIN") {
 						$player_ip = htmlentities($result->player_ip, ENT_QUOTES);
@@ -63,7 +63,7 @@ if (isset($_POST['action'])) {
 				} else {
 					$player_ip = "<i><font color='#677882'>".lang("_NOTAPPLICABLE")."</font></i>";
 				}*/
-				
+
 				if(!empty($result->player_ip))
 				{
 						if(empty($player_id))
@@ -78,9 +78,9 @@ if (isset($_POST['action'])) {
 				{
 					$player_ip = "<i><font color='#677882'>".lang("_NOTAPPLICABLE")."</font></i>";
 				}
-		
+
 				$ban_start = dateShorttime($result->ban_created);
-		
+
 				if(empty($result->ban_length) OR $result->ban_length == 0) {
 					$ban_duration = lang("_PERMANENT");
 					$ban_end = "<i><font color='#677882'>".lang("_NOTAPPLICABLE")."</font></i>";
@@ -95,18 +95,18 @@ if (isset($_POST['action'])) {
 				$ban_end = dateShorttime($date_and_ban)."&nbsp;(".timeleft($now,$date_and_ban) . lang("_REMAINING") .")";
 				}
 				}
-		
+
 				if($result->ban_type == "SI") {
 					$ban_type = lang("_STEAMID&IP");
 				} else {
 					$ban_type = "SteamID";
 				}
-		
+
 				$ban_reason = htmlentities($result->ban_reason, ENT_QUOTES);
-		
+
 				if($result->server_name <> "website") {
-					$query2 = "SELECT nickname FROM $config->amxadmins WHERE steamid = '".$result->admin_id."'";	
-					$resource2 = mysql_query($query2) or die(mysql_error());	
+					$query2 = "SELECT nickname FROM $config->amxadmins WHERE steamid = '".$result->admin_id."'";
+					$resource2 = mysql_query($query2) or die(mysql_error());
 					$result2 = mysql_fetch_object($resource2);
 					$admin_name = htmlentities($result->admin_nick, ENT_QUOTES) . htmlentities($result2 ? $result2->nickname : "", ENT_QUOTES);
 					$server_name = $result->server_name;
@@ -114,7 +114,7 @@ if (isset($_POST['action'])) {
 					$admin_name = htmlentities($result->admin_nick, ENT_QUOTES);
 					$server_name = "Website";
 				}
-		
+
 				$ban_info = array(
 					"player_name"	=> $player_name,
 					"player_id"	=> $player_id,
@@ -126,8 +126,8 @@ if (isset($_POST['action'])) {
 					"ban_reason"	=> $ban_reason,
 					"admin_name"	=> $admin_name,
 					"server_name"	=> $server_name
-					);	
-				
+					);
+
 				if(isset($_GET["bhid"])) {
 					$unban_info = array(
 						"verify"	=> TRUE,
@@ -138,33 +138,33 @@ if (isset($_POST['action'])) {
 				}
 			}
 		}
-	} else if ($_POST['action'] == "edit") {
+	} else if ($_GET['action'] == "edit") {
 
 		// Get ban details
-		if(isset($_POST['bid']) && is_numeric($_POST['bid'])) {
-			$resource = mysql_query("SELECT * FROM $config->bans WHERE bid = '".mysql_escape_string($_POST["bid"])."'") or die(mysql_error());
-			
+		if(isset($_GET['bid']) && is_numeric($_GET['bid'])) {
+			$resource = mysql_query("SELECT * FROM $config->bans WHERE bid = '".mysql_escape_string($_GET["bid"])."'") or die(mysql_error());
+
 			if(mysql_num_rows($resource) == 0) {
 				trigger_error("Can't find ban with given ID.", E_USER_NOTICE);
 			} else {
 				$result = mysql_fetch_object($resource);
-		
+
 				// Get the AMX username of the admin if the ban was invoked from inside the server
 				if($result->server_name <> "website") {
-					$query2					= "SELECT nickname FROM $config->amxadmins WHERE steamid = '".$result->admin_id."'";	
-					$resource2			= mysql_query($query2) or die(mysql_error());	
+					$query2					= "SELECT nickname FROM $config->amxadmins WHERE steamid = '".$result->admin_id."'";
+					$resource2			= mysql_query($query2) or die(mysql_error());
 					$result2				= mysql_fetch_object($resource2);
 					$admin_amxname = ($result2) ? htmlentities($result2->nickname, ENT_QUOTES) : "";
 				}
-		
+
 				// Prepare all the variables
 				$player_name	= htmlentities($result->player_nick, ENT_QUOTES);
 				$player_id	= htmlentities($result->player_id, ENT_QUOTES);
 				$playa_ip	= $result->player_ip;
 				$ban_type	= $result->ban_type;
-		
+
 				$ban_start = dateShorttime($result->ban_created);
-		
+
 				if(empty($result->ban_length) OR $result->ban_length == 0) {
 					$ban_duration = 0;
 				} else {
@@ -172,10 +172,10 @@ if (isset($_POST['action'])) {
 				}
 
 				$ban_reason = $result->ban_reason;
-		
+
 				if($result->server_name <> "website") {
-					$query2 = "SELECT nickname FROM $config->amxadmins WHERE steamid = '".$result->admin_id."'";	
-					$resource2 = mysql_query($query2) or die(mysql_error());	
+					$query2 = "SELECT nickname FROM $config->amxadmins WHERE steamid = '".$result->admin_id."'";
+					$resource2 = mysql_query($query2) or die(mysql_error());
 					$result2 = mysql_fetch_object($resource2);
 					$admin_name = htmlentities($result->admin_nick, ENT_QUOTES)." (".htmlentities(($result2) ? $result2->nickname : "", ENT_QUOTES).")";
 					$server_name = $result->server_name;
@@ -183,7 +183,7 @@ if (isset($_POST['action'])) {
 					$admin_name = htmlentities($result->admin_nick, ENT_QUOTES);
 					$server_name = "Website";
 				}
-		
+
 				$ban_info = array(
 					"player_name"	=> $player_name,
 					"player_id"	=> $player_id,
@@ -195,46 +195,46 @@ if (isset($_POST['action'])) {
 					"ban_reason"	=> htmlentities($ban_reason, ENT_QUOTES),
 					"admin_name"	=> $admin_name,
 					"server_name"	=> $server_name
-					);	
+					);
 			}
 		}
-	} else if ($_POST['action'] == "apply") {
-		$player_nick = $_POST['player_nick'];
-		$ban_reason = $_POST['ban_reason'];
+	} else if ($_GET['action'] == "apply") {
+		$player_nick = $_GET['player_nick'];
+		$ban_reason = $_GET['ban_reason'];
 
-		if($_POST['player_ip'] == "") {
-			$resource = mysql_query("UPDATE `$config->bans` SET `player_ip` = NULL, `player_id` = '".$_POST['player_id']."', `player_nick` = '$player_nick', `ban_type` = '".$_POST['ban_type']."', `ban_reason` = '$ban_reason', `ban_length` = '".$_POST['ban_length']."' WHERE `bid` = '".$_POST['bid']."'") or die (mysql_error());
+		if($_GET['player_ip'] == "") {
+			$resource = mysql_query("UPDATE `$config->bans` SET `player_ip` = NULL, `player_id` = '".$_GET['player_id']."', `player_nick` = '$player_nick', `ban_type` = '".$_GET['ban_type']."', `ban_reason` = '$ban_reason', `ban_length` = '".$_GET['ban_length']."' WHERE `bid` = '".$_GET['bid']."'") or die (mysql_error());
 		} else {
-			$resource = mysql_query("UPDATE `$config->bans` SET `player_ip` = '".$_POST['player_ip']."', `player_id` = '".$_POST['player_id']."', `player_nick` = '$player_nick', `ban_type` = '".$_POST['ban_type']."', `ban_reason` = '$ban_reason', `ban_length` = '".$_POST['ban_length']."' WHERE `bid` = '".$_POST['bid']."'") or die (mysql_error());
+			$resource = mysql_query("UPDATE `$config->bans` SET `player_ip` = '".$_GET['player_ip']."', `player_id` = '".$_GET['player_id']."', `player_nick` = '$player_nick', `ban_type` = '".$_GET['ban_type']."', `ban_reason` = '$ban_reason', `ban_length` = '".$_GET['ban_length']."' WHERE `bid` = '".$_GET['bid']."'") or die (mysql_error());
 		}
 
 		$now = date("U");
-		$add_log	= mysql_query("INSERT INTO $config->logs (timestamp, ip, username, action, remarks) VALUES ('$now', '".$_SERVER['REMOTE_ADDR']."', '".$_SESSION['uid']."', 'edit ban', 'Ban with BanID ".$_POST['bid']." (".$_POST['player_id'].")(".$_POST['player_ip'].") edited')") or die (mysql_error());
+		$add_log	= mysql_query("INSERT INTO $config->logs (timestamp, ip, username, action, remarks) VALUES ('$now', '".$_SERVER['REMOTE_ADDR']."', '".$_SESSION['uid']."', 'edit ban', 'Ban with BanID ".$_GET['bid']." (".$_GET['player_id'].")(".$_GET['player_ip'].") edited')") or die (mysql_error());
 
 		$url			= "$config->document_root";
 		$delay		= "0";
-		//echo "Edited bid ".$_POST['bid'].". Redirecting...";
+		//echo "Edited bid ".$_GET['bid'].". Redirecting...";
 		echo "<meta http-equiv=\"refresh\" content=\"".$delay.";url='http://".$_SERVER["HTTP_HOST"]."$url'\">";
 		exit();
-	} else if ($_POST['action'] == "unban_perm") {
+	} else if ($_GET['action'] == "unban_perm") {
 
-		$list_ban	= mysql_query("SELECT * FROM $config->bans WHERE bid = '".$_POST['bid']."'") or die (mysql_error());
+		$list_ban	= mysql_query("SELECT * FROM $config->bans WHERE bid = '".$_GET['bid']."'") or die (mysql_error());
 
 		while ($myban	= mysql_fetch_array($list_ban)) {
 			$unban_created = date("U");
 			$player_nick = htmlentities($myban['player_nick'], ENT_QUOTES) ;
 			$ban_reason = htmlentities($myban['ban_reason'], ENT_QUOTES) ;
-			
-			$insert_ban = mysql_query("INSERT INTO $config->ban_history (player_ip, player_id, player_nick, admin_ip, admin_id, admin_nick, ban_type, ban_reason, ban_created, ban_length, server_ip, server_name, unban_created, unban_reason, unban_admin_nick) VALUES ('$myban[player_ip]', '$myban[player_id]', '$player_nick', '$myban[admin_ip]', '$myban[admin_id]', '$myban[admin_nick]', '$myban[ban_type]', '$ban_reason', '$myban[ban_created]', '$myban[ban_length]', '$myban[server_ip]', '$myban[server_name]', '$unban_created', '".$_POST['unban_reason']."', '".$_SESSION['uid']."')") or die (mysql_error());
-			$remove_ban = mysql_query("DELETE FROM $config->bans WHERE bid = '".$_POST['bid']."'") or die (mysql_error());
+
+			$insert_ban = mysql_query("INSERT INTO $config->ban_history (player_ip, player_id, player_nick, admin_ip, admin_id, admin_nick, ban_type, ban_reason, ban_created, ban_length, server_ip, server_name, unban_created, unban_reason, unban_admin_nick) VALUES ('$myban[player_ip]', '$myban[player_id]', '$player_nick', '$myban[admin_ip]', '$myban[admin_id]', '$myban[admin_nick]', '$myban[ban_type]', '$ban_reason', '$myban[ban_created]', '$myban[ban_length]', '$myban[server_ip]', '$myban[server_name]', '$unban_created', '".$_GET['unban_reason']."', '".$_SESSION['uid']."')") or die (mysql_error());
+			$remove_ban = mysql_query("DELETE FROM $config->bans WHERE bid = '".$_GET['bid']."'") or die (mysql_error());
 
 			$now = date("U");
-			$add_log	= mysql_query("INSERT INTO $config->logs (timestamp, ip, username, action, remarks) VALUES ('$now', '".$_SERVER['REMOTE_ADDR']."', '".$_SESSION['uid']."', 'unban ban', 'Ban with BanID ".$_POST['bid']." unbanned (SteamID $myban[player_id])')") or die (mysql_error());
+			$add_log	= mysql_query("INSERT INTO $config->logs (timestamp, ip, username, action, remarks) VALUES ('$now', '".$_SERVER['REMOTE_ADDR']."', '".$_SESSION['uid']."', 'unban ban', 'Ban with BanID ".$_GET['bid']." unbanned (SteamID $myban[player_id])')") or die (mysql_error());
 		}
 
 		$url	= "$config->document_root";
 		$delay	= "0";
-		//echo "unbanned bid ".$_POST['bid'].". Redirecting...";
+		//echo "unbanned bid ".$_GET['bid'].". Redirecting...";
 		echo "<meta http-equiv=\"refresh\" content=\"".$delay.";url='http://".$_SERVER["HTTP_HOST"]."$url'\">";
 		exit();
 	}
@@ -258,8 +258,8 @@ $smarty->assign("meta","");
 $smarty->assign("title",$title);
 $smarty->assign("dir",$config->document_root);
 $smarty->assign("this",$_SERVER['PHP_SELF']);
-$smarty->assign("action", $_POST['action']);
-$smarty->assign("bid",$_POST['bid']);
+$smarty->assign("action", $_GET['action']);
+$smarty->assign("bid",$_GET['bid']);
 $smarty->assign("ban_info",$ban_info);
 
 $smarty->display('main_header.tpl');

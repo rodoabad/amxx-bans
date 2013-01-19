@@ -1,34 +1,35 @@
+<!DOCTYPE html>
 {php}
     CheckFrontEndState();
-    
+
     if(isset($_COOKIE["amxbans"])) {
-    	ReadSessionFromCookie();
+        ReadSessionFromCookie();
     }
 {/php}
-<!DOCTYPE html>
 <html lang="en">
     <head>
         <title>{$title}</title>
         <meta http-equiv="pragma" content="no-cache" />
         <meta http-equiv="cache-control" content="no-cache" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-			
+
+
 		<link rel="stylesheet" type="text/css" href="{$dir}/css/normalize.css" />
 		<link rel="stylesheet" type="text/css" href="{$dir}/css/bootstrap.css" />
 		<link rel="stylesheet" type="text/css" href="{$dir}/css/bootstrap-responsive.css" />
 		<link rel="stylesheet" type="text/css" href="{$dir}/css/amxbans.css" />
-		
-		<script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>	
+
+		<script src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 		<script src="{$dir}/js/bootstrap.js"></script>
 		<script src="{$dir}/js/amxxbans.js"></script>
-			
+
 		<script src="{$dir}/layer.js"></script>
-	
+
 	</head>
 
 <body>
-   
+
 
 <div class="container">
     <div class="navbar">
@@ -39,7 +40,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </a>
-                
+
                 <a class="brand" href="javascript:void(0)">AMXX Bans (Beta)</a>
                 <div class="nav-collapse">
                     <ul class="nav">
@@ -97,7 +98,7 @@
                                         <li class="{if $section == 'config'}active{/if}"><a href="{$dir}/admin/cfg.php">{'_CONFIG'|lang}</a></li>
                                         <li class="{if $section == 'logs'}active{/if}"><a href="{$dir}/admin/log_search.php">{'_ACCESSLOG'|lang}</a></li>
                                     {/if}
-                        
+
                                 </ul>
                             </li>
                         {/if}
@@ -111,13 +112,13 @@
                                 <a href="{$dir}/login.php">{'_LOGIN'|lang}</a>
                             {/if}
                         </li>
-                       
+
                     </ul>
                </div>
             </div>
         </div>
     </div>
-    
+
     {php}
         global $config;
         if($config->disable_frontend == 'true') {
@@ -129,7 +130,7 @@
     {/php}
 
     {if isset($smarty.session.uid)}
-    <!-- 
+    <!--
         <div class="alert alert-success">
             <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>Well done!</strong> {'_LOGGED'|lang } {$smarty.session.uid}

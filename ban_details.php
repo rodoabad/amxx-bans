@@ -47,7 +47,7 @@ if((isset($_GET['bid']) && is_numeric($_GET['bid'])) || (isset($_GET['bhid']) &&
 
 		// Prepare all the variables
 		//$player_name = htmlentities($result->player_nick, ENT_QUOTES);
-		$player_name = $result->player_nick;
+		$player_name = htmlentities($result->player_nick, ENT_QUOTES);
 
 		if(!empty($result->player_ip)) {
 			$player_ip = htmlentities($result->player_ip, ENT_QUOTES);
