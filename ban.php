@@ -3,23 +3,22 @@
 // Start session
 session_start();
 
-// Require basic site files
-require("include/config.inc.php");
 
-if ($config->error_handler == "enabled") {
-	include("$config->error_handler_path");
+require('include/config.inc.php');
+require($config->path_root . '/include/functions.lang.php');
+require($config->path_root . '/include/functions.inc.php');
+
+if ($config->error_handler == 'enabled') {
+	include($config->error_handler_path);
 }
 
-if ($config->geoip == "enabled") {
-    include("$config->path_root/include/geoip.inc");
-    include("$config->path_root/include/geoipcity.inc");
-    include("$config->path_root/include/geoipregionvars.php");
+if ($config->geoip == 'enabled') {
+    include($config->path_root . '/include/geoip.inc');
+    include($config->path_root . '/include/geoipcity.inc');
+    include($config->path_root . '/include/geoipregionvars.php');
 }
 
-require("$config->path_root/include/functions.lang.php");
-require("$config->path_root/include/functions.inc.php");
-
-// Get ban details
+/* GET BAN DETAILS */
 if((isset($_GET['bid']) && is_numeric($_GET['bid'])) || (isset($_GET['bhid']) && is_numeric($_GET['bhid']))) {
 	if(isset($_GET['bid'])) {
 		$get_ban_id = 'SELECT * FROM `' .$config->bans. '` WHERE `bid` = "' .mysql_escape_string($_GET['bid']). '"';
