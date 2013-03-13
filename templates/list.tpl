@@ -9,6 +9,7 @@
 </table>
 <br>
 {/if}
+
 <ul class="breadcrumb">
   <li>Home <span class="divider">/</span></li>
   <li class="active">Ban List</li>

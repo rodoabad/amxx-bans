@@ -497,4 +497,8 @@ function throw_error( $msg )
 
 }
 
+function makeSafe($variable) {
+    return mysql_real_escape_string(trim($variable));
+}
+
 ?>

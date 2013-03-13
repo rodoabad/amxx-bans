@@ -1,12 +1,19 @@
 {if $display_search != "enabled" && ($smarty.session.bans_add != "yes")}
 	{"_NOACCESS"|lang}
 {else}
+
+<ul class="breadcrumb">
+  <li>Home <span class="divider">/</span></li>
+  <li class="active">Search</li>
+</ul>
+
+    <h3>Search</h3>
 	<form class="form-horizontal" method="get" action="{$this}">
     	<div class="control-group">
-        	<legend>Search</legend>
+
             <input class="input-xlarge" type="text" name="q" placeholder="What are you looking for?">
             <select name="type">
-            	<option value="playername">Player Name</option>
+            	<option value="player">Player</option>
                 <option value="steamid">Steam ID</option>
                 <option value="ipaddress">IP Address</option>
                 <option value="reason">Reason</option>

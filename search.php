@@ -31,6 +31,7 @@ if ($config->geoip == 'enabled') {
 $admin_list = 'SELECT DISTINCT `username`, `nickname` FROM `' .$config->amxadmins. '` ORDER BY `nickname` ASC';
 $get_admin_list = mysql_query($admin_list) or die(mysql_error());
 
+// Create empty array outside while scope.
 $admin_array = array();
 
 while($admin_object = mysql_fetch_object($get_admin_list)) {
@@ -43,6 +44,7 @@ while($admin_object = mysql_fetch_object($get_admin_list)) {
 		'nickname'	=> $nickname
 	);
 
+	// copy to $admin_array
 	$admin_array[] = $admin_info;
 }
 
@@ -82,26 +84,32 @@ while($reason_object = mysql_fetch_object($get_reason_list)) {
     $reason_array[] = $reason_info;
 }
 
+// SEARCH PARAMETERS
+
+$q = makeSafe($_GET['q']);
+$type = makeSafe($_GET['type']);
+
+
 // Make the array for the active bans list
-if ((isset($_GET['q']))) {
-	if ($_GET['type'] == 'playername') {
-		$resource3 = mysql_query('SELECT * FROM `' .$config->bans. '` WHERE `player_nick` LIKE "%' .$_GET['q']. '%" ORDER BY `ban_created` DESC') or die(mysql_error());
-	} else if ($_GET['type'] == 'steamid') {
-		$resource3 = mysql_query('SELECT * FROM `' .$config->bans. '` WHERE `player_id` = "' .$_GET['q']. '" ORDER BY `ban_created` DESC') or die(mysql_error());
-	} else if ($_GET['type'] == 'ipaddress') {
-        $resource3 = mysql_query('SELECT * FROM `' .$config->bans. '` WHERE `player_ip` LIKE "%' .$_GET['q']. '%" ORDER BY `ban_created` DESC') or die(mysql_error());
-    } else if ($_GET['type'] == 'reason') {
-		$resource3 = mysql_query('SELECT * FROM `' .$config->bans. '` WHERE `ban_reason` LIKE "%' .$_GET['q']. '%" ORDER BY `ban_created` DESC') or die(mysql_error());
+if ($q) {
+	if ($type == 'player') {
+		$results = mysql_query('SELECT * FROM `' .$config->bans. '` WHERE `player_nick` LIKE "%' .$q. '%" ORDER BY `ban_created` DESC') or die(mysql_error());
+	} else if ($type == 'steamid') {
+		$results = mysql_query('SELECT * FROM `' .$config->bans. '` WHERE `player_id` = "' .$q. '" ORDER BY `ban_created` DESC') or die(mysql_error());
+	} else if ($type == 'ipaddress') {
+        $results = mysql_query('SELECT * FROM `' .$config->bans. '` WHERE `player_ip` LIKE "%' .$q. '%" ORDER BY `ban_created` DESC') or die(mysql_error());
+    } else if ($type == 'reason') {
+		$results = mysql_query('SELECT * FROM `' .$config->bans. '` WHERE `ban_reason` LIKE "%' .$q. '%" ORDER BY `ban_created` DESC') or die(mysql_error());
 	} else if (isset($_GET['date'])) {
-		$date		= substr_replace($_GET['date'], '', 2, 1);
-		$date		= substr_replace($date, '', 4, 1);
-		$resource3	= mysql_query("SELECT * FROM `" .$config->bans. "` WHERE FROM_UNIXTIME(`ban_created`,'%d%m%Y') LIKE '$date' ORDER BY `ban_created` DESC") or die(mysql_error());
+		$date = substr_replace($_GET['date'], '', 2, 1);
+		$date = substr_replace($date, '', 4, 1);
+		$results = mysql_query("SELECT * FROM `" .$config->bans. "` WHERE FROM_UNIXTIME(`ban_created`,'%d%m%Y') LIKE '$date' ORDER BY `ban_created` DESC") or die(mysql_error());
 	}
-	else if ($_GET['type'] == 'admin') {
-		$resource3	= mysql_query('SELECT * FROM `' .$config->bans. '` WHERE `admin_id` = "' .$_GET['q']. '" ORDER BY `ban_created` DESC') or die(mysql_error());
+	else if ($type == 'admin') {
+		$results = mysql_query('SELECT * FROM `' .$config->bans. '` WHERE `admin_id` = "' .$q. '" ORDER BY `ban_created` DESC') or die(mysql_error());
 	}
-	else if ($_GET['type'] == 'server') {
-		$resource3	= mysql_query('SELECT * FROM `' .$config->bans. '` WHERE `server_ip` LIKE "%' .$_GET['q']. '%" ORDER BY `ban_created` DESC') or die(mysql_error());
+	else if ($type == 'server') {
+		$results = mysql_query('SELECT * FROM `' .$config->bans. '` WHERE `server_ip` LIKE "%' .$q. '%" ORDER BY `ban_created` DESC') or die(mysql_error());
 	}
 
 	$ban_array	= array();
@@ -109,7 +117,7 @@ if ((isset($_GET['q']))) {
     $timezone_correction = $config->timezone_fix * 3600;
 	$bancount = 0;
 
-	while($result3 = mysql_fetch_object($resource3)) {
+	while($result3 = mysql_fetch_object($results)) {
 		$bid = $result3->bid;
 		//$date = dateShorttime($result3->ban_created + $timezone);
 		$date = date('n/j/y', $result3->ban_created + $timezone_correction);
