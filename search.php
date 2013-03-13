@@ -95,7 +95,7 @@ if ($q) {
 	if ($type == 'player') {
 		$results = mysql_query('SELECT * FROM `' .$config->bans. '` WHERE `player_nick` LIKE "%' .$q. '%" ORDER BY `ban_created` DESC') or die(mysql_error());
 	} else if ($type == 'steamid') {
-		$results = mysql_query('SELECT * FROM `' .$config->bans. '` WHERE `player_id` = "' .$q. '" ORDER BY `ban_created` DESC') or die(mysql_error());
+		$results = mysql_query('SELECT * FROM `' .$config->bans. '` WHERE `player_id` LIKE "%' .$q. '%" ORDER BY `ban_created` DESC') or die(mysql_error());
 	} else if ($type == 'ipaddress') {
         $results = mysql_query('SELECT * FROM `' .$config->bans. '` WHERE `player_ip` LIKE "%' .$q. '%" ORDER BY `ban_created` DESC') or die(mysql_error());
     } else if ($type == 'reason') {

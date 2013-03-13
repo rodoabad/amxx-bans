@@ -1,17 +1,15 @@
 <?php
 
-// Added by Geesu
-if ( !file_exists("include/config.inc.php") ) {
-
-header("Location: http://" . $_SERVER['HTTP_HOST']
+// If config.inc.php doesn't exist go to setup.
+if (!file_exists('include/config.inc.php')){
+    header("Location: http://" . $_SERVER['HTTP_HOST']
                      . rtrim(dirname($_SERVER['PHP_SELF']), '/\\')
                      . "/" . "admin/setup.php");
-
 }
 
 $previous_button = NULL;
 $next_button = NULL;
-// End Added by Geesu
+
 
 
 // Start session
