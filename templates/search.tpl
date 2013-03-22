@@ -8,12 +8,10 @@
 </ul>
 
     <h3>Search</h3>
-	<form class="form-horizontal" method="get" action="{$this}">
+	<form class="form-inline" method="get" action="{$this}">
     	<div class="control-group">
-
-            <input class="input-xlarge" type="text" name="q" placeholder="What are you looking for?">
-            <select name="type">
-            	<option value="player">Player</option>
+            <select name="type" class="span2">
+                <option value="player">Player</option>
                 <option value="steamid">Steam ID</option>
                 <option value="ipaddress">IP Address</option>
                 <option value="reason">Reason</option>
@@ -22,6 +20,7 @@
                 <option value="admin">Admin</option>
                 <option value="server">Server</option>
             </select>
+            <input class="span9" type="text" name="q" placeholder="What are you looking for?">
             <button class="btn btn-primary" type="submit">{'_SEARCH'|lang}</button>
         </div>
     </form>
@@ -99,13 +98,13 @@
 
 		<table>
 		    <tr>
-	            <td height='16' width='2%'  class='listtable_top'>&nbsp;</td>
-	            <td height='16' width='{if $display_reason == "enabled"}10%{else}15%{/if}' class='listtable_top'><b>{"_DATE"|lang}</b></td>
-	            <td height='16' width='{if $display_reason == "enabled"}23%{else}33%{/if}' class='listtable_top'><b>{"_PLAYER"|lang}</b></td>
-	            <td height='16' width='{if $display_reason == "enabled"}20%{else}30%{/if}' class='listtable_top'><b>{"_ADMIN"|lang}</b></td>
+	            <td>&nbsp;</td>
+	            <td><b>{"_DATE"|lang}</b></td>
+	            <td><b>{"_PLAYER"|lang}</b></td>
+	            <td><b>{"_ADMIN"|lang}</b></td>
 	            {if $display_reason == "enabled"}<td height='16' width='25%' class='listtable_top'><b>{"_REASON"|lang}</b></td>{/if}
-	            <td height='16' width='16%' class='listtable_top'><b>{"_LENGHT"|lang}</b></td>
-	            <td height='16' width='2%' class='listtable_top'>&nbsp;</td>
+	            <td><b>{"_LENGHT"|lang}</b></td>
+	            <td>&nbsp;</td>
 	    	</tr>
 
 
@@ -113,15 +112,15 @@
 
 
          <tr bgcolor="#D3D8DC" style="CURSOR:hand;" onClick="document.location = '{$dir}/ban.php?bhid={$exbans.bhid}';" onMouseOver="this.style.backgroundColor='#C7CCD2'" onMouseOut="this.style.backgroundColor='#D3D8DC'">
-            <td height='16' width='2%'  class='listtable_1' align='center'><img src='{$dir}/images/{$exbans.ex_gametype}.gif'></td>
-            <td height='16' width='{if $display_reason == "enabled"}10%{else}15%{/if}%' class='listtable_1'>{$exbans.ex_date}</td>
-            <td height='16' width='{if $display_reason == "enabled"}23%{else}33%{/if}' class='listtable_1'>{$exbans.ex_player}</td>
-            <td height='16' width='{if $display_reason == "enabled"}20%{else}30%{/if}' class='listtable_1'>{if $display_admin == "enabled" || ($smarty.session.bans_add == "yes")}{$exbans.ex_admin}{else}<i><font color='#677882'>{"_HIDDEN"|lang}</font></i>{/if}</td>
+            <td><img src='{$dir}/images/{$exbans.ex_gametype}.gif'></td>
+            <td>{$exbans.ex_date}</td>
+            <td>{$exbans.ex_player}</td>
+            <td>{if $display_admin == "enabled" || ($smarty.session.bans_add == "yes")}{$exbans.ex_admin}{else}<i><font color='#677882'>{"_HIDDEN"|lang}</font></i>{/if}</td>
             {if $display_reason == "enabled"}<td height='16' width='25%' class='listtable_1'>{$exbans.ex_reason}</td>{/if}
-            <td height='16' width='16%' class='listtable_1'>{$exbans.ex_duration}</td>
+            <td>{$exbans.ex_duration}</td>
 
-            <td height='16' width='2%' class='listtable_1'>
-                <table width='100%' border='0' cellpadding='0' cellspacing='0'>
+            <td>
+                <table>
             <tr>
                 {if (($smarty.session.bans_edit == "yes") || (($smarty.session.bans_edit == "own") && ($smarty.session.uid == $bans.webadmin)))}
                 <form name="delete" method="get" action="{$dir}/admin/edit_ban_ex.php"><input type='hidden' name='action' value='edit_ex'><input type='hidden' name='bhid' value='{$exbans.bhid}'><td align='right' width='1%'><input type='image' SRC='{$dir}/images/edit.gif' name='action' ALT='{"_EDIT"|lang}'>&nbsp;&nbsp;</td></form>
