@@ -38,8 +38,8 @@ $resource	= mysql_query('SELECT COUNT(bid) AS `all_bans` FROM `' .$config->bans.
 $result		= mysql_fetch_object($resource);
 
 // Get the page number, if no number is defined make default 1
-if(isset($_GET['page']) AND is_numeric($_GET['page'])) {
-	$page = $_GET['page'];
+if(isset($_GET['page']) && is_numeric($_GET['page'])) {
+	$page = makeSafe($_GET['page']);
 
 	if($page < 1) {
 		trigger_error("Pagenumbers need to be >= 1.", E_USER_NOTICE);
@@ -50,7 +50,7 @@ if(isset($_GET['page']) AND is_numeric($_GET['page'])) {
 
 // Get the view number, if no number is defined set to default
 if(isset($_GET["view"]) AND is_numeric($_GET["view"])) {
-	$view = $_GET["view"];
+	$view = makeSafe($_GET["view"]);
 } else {
 	$view = $config->bans_per_page;
 }

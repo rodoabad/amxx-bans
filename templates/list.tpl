@@ -18,9 +18,6 @@
 <table id="ban-list" class="table table-bordered table-hover">
 	<thead>
 		<tr>
-		    <th>{'_LENGTH'|lang}</th>
-			<th class="hidden-phone">Game</th>
-			<!-- <th class="hidden-phone"></th> -->
 			<th class="hidden-phone">{'_DATE'|lang}</th>
 			<th class="hidden-phone">{'_PLAYER'|lang}</th>
 			<th>Steam ID</th>
@@ -28,20 +25,14 @@
 			{if $display_reason == 'enabled'}
 				<th class="hidden-phone">{'_REASON'|lang}</th>
 			{/if}
+			<th>{'_LENGTH'|lang}</th>
+            <th class="hidden-phone">Game</th>
 			<th>{'_DETAILS'|lang}</th>
 		</tr>
 	</thead>
 	<tbody>
 	{foreach from=$bans item=bans}
 		<tr id="ban-{$bans.bid}" class="ban-summary">
-            <td>
-                {if $bans.duration == 'Permanent'}
-                    <span class="label label-important">{$bans.duration}</span>
-                {else}
-                    <span class="label label-warning">{$bans.duration}</span>
-                {/if}
-            </td>
-            <td class="hidden-phone"><span class="label label-info">{$bans.gametype}</span></td>
             <!--
             <td class="hidden-phone">
             	{if $geoip == 'enabled'}
@@ -77,7 +68,14 @@
             {if $display_reason == "enabled"}
             	<td class="hidden-phone">{$bans.ban_reason}</td>
             {/if}
-
+            <td>
+                {if $bans.duration == 'Permanent'}
+                    <span class="label label-important">{$bans.duration}</span>
+                {else}
+                    <span class="label label-warning">{$bans.duration}</span>
+                {/if}
+            </td>
+            <td class="hidden-phone"><span class="label label-info">{$bans.gametype}</span></td>
             <td>
                 <button id="ban-details-button-{$bans.bid}" class="btn btn-small hidden-phone">Details</button>
                 <a class="btn btn-small visible-phone" href="{$dir}/ban.php?bid={$bans.bid}">Details</a>

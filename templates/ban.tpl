@@ -160,7 +160,12 @@
         <thead>
             <tr>
                 <!-- <th>{"_BANHISTORY"|lang}</th> -->
-                <th colspan="6">Related Bans (Found {math equation="bhans - 1" bhans=$bhans|@count} Matches)</th>
+
+                {math
+                    assign="bhancount"
+                    equation="bhans - 1" bhans=$bhans|@count
+                }
+                <th colspan="6">Related Bans1 (Found {$bhancount} Matches)</th>
             </tr>
         </thead>
         <tbody>

@@ -5,9 +5,9 @@
 
 
 body {
-    background: transparent url('../img/subtle_dots.png') repeat;
-    margin: 20px auto;   
-}    
+    /* background: transparent url('../img/subtle_dots.png') repeat; */
+    margin: 20px auto;
+}
 
 /* Paddings */
 .pad20-v {
@@ -64,7 +64,7 @@ body {
 
 .ban-maps {
     width: 300px;
- height: 300px;   
+ height: 300px;
 }
 
 #map-canvas {

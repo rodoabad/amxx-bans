@@ -1,8 +1,5 @@
 *.class
 *.pyc
 *.pyo
-*.class
-*.pyc
-*.pyo
 /include/config.inc.php
 /smarty/templates_c/*
