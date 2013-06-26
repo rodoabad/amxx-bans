@@ -165,7 +165,7 @@
                     assign="bhancount"
                     equation="bhans - 1" bhans=$bhans|@count
                 }
-                <th colspan="6">Related Bans1 (Found {$bhancount} Matches)</th>
+                <th colspan="6">Related Bans (Found {$bhancount} Matches)</th>
             </tr>
         </thead>
         <tbody>
